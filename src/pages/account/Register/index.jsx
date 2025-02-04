@@ -55,7 +55,7 @@ export default function Register() {
 					<TextInput
 						label={t('Full name')}
 						type="text"
-						name="username"
+						name="HyperCoderthemes"
 						placeholder={t('Enter your name')}
 						containerClass="mb-3"
 					/>
