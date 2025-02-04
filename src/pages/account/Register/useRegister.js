@@ -35,7 +35,7 @@ export default function useRegister() {
 		setLoading(true);*/
 		try {
 			const res = await authApi.register({
-				name: username,
+				username,
 				email,
 				password: password1,
 				rol:rol
