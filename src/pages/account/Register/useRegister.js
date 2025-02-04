@@ -16,24 +16,27 @@ export default function useRegister() {
 	const { showNotification } = useNotificationContext();
 
 	const schema = yup.object().shape({
-		username: yup.string().required(t('Please enter name')),
+		nonbre: yup.string().required(t('Please enter name')),
 		email: yup.string().email('Please enter valid email').required(t('Please enter email')),
+		//cliente: yup.string().required(t('Please enter name')),
 		password1: yup
 			.string()
 			.required(t('Please enter password'))
 			.min(8, 'Password is too short - should be 8 chars minimum')
 			.matches(/[a-zA-Z]/, 'Password can only contain latin letters'),
 		password2: yup.string().oneOf([yup.ref('password1')], 'Passwords must match'),
+		rol: yup.string().required(t('Please enter rol admin or user'))
 	});
 
 	const register = async ({ data }) => {
-		const { username, email, password1 } = data;
+		const { nombre, email, password1, rol } = data;
 		setLoading(true);
 		try {
 			const res = await authApi.register({
-				name: username,
+				name: nombre,
 				email,
 				password: password1,
+				rol
 			});
 			if (res?.data.id) {
 				showNotification({
