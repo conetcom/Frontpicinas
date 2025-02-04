@@ -16,16 +16,16 @@ export default function useRegister() {
 	const { showNotification } = useNotificationContext();
 
 	const schema = yup.object().shape({
-		nonbre: yup.string().required(t('Please enter name')),
+		nombre: yup.string().required(t('Please enter name')),
 		email: yup.string().email('Please enter valid email').required(t('Please enter email')),
-		//cliente: yup.string().required(t('Please enter name')),
+		rol: yup.string().required(t('Please enter rol')),
 		password1: yup
 			.string()
 			.required(t('Please enter password'))
 			.min(8, 'Password is too short - should be 8 chars minimum')
 			.matches(/[a-zA-Z]/, 'Password can only contain latin letters'),
 		password2: yup.string().oneOf([yup.ref('password1')], 'Passwords must match'),
-		rol: yup.string().required(t('Please enter rol admin or user'))
+		//rol: yup.string().required(t('Please enter rol admin or user'))
 	});
 
 	const register = async ({ data }) => {
@@ -36,7 +36,7 @@ export default function useRegister() {
 				name: nombre,
 				email,
 				password: password1,
-				rol
+				rol,
 			});
 			if (res?.data.id) {
 				showNotification({
