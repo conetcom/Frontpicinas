@@ -11,7 +11,7 @@ function AuthService() {
 			return HttpClient.post('/logout/', {});
 		},
 		register: (values) => {
-			return HttpClient.post('/registro/', values);
+			return HttpClient.post('/register/', values);
 		},
 		forgetPassword: (values) => {
 			return HttpClient.post('/forget-password/', values);
