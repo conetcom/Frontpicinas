@@ -40,7 +40,7 @@ export default function useRegister() {
 				password: password1,
 				rol:rol
 			});
-			if (res?.data.id) {
+			if (res?.data?.data?.user?.id) {
 				showNotification({
 					message: 'Registration successful. Welcome aboard!',
 					type: 'success',
