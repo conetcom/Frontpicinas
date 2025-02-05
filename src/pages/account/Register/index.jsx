@@ -45,10 +45,10 @@ export default function Register() {
 					onSubmit={register}
 					schema={schema}
 					defaultValues={{
-						email: 'hyper@coderthemes.com',
-						username: 'Hyper',
-						password1: 'HyperCoderthemes',
-						password2: 'HyperCoderthemes',
+						email: '',
+						username: '',
+						password1: '',
+						password2: '',
 						rol: 'cliente',
 					}}
 				>
