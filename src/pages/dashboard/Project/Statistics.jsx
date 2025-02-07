@@ -14,7 +14,7 @@ const Statistics = () => {
 										<h3>
 											<span>29</span>
 										</h3>
-										<p className="text-muted font-15 mb-0">Total Projects</p>
+										<p className="text-muted font-15 mb-0">P H</p>
 									</Card.Body>
 								</Card>
 							</Col>
@@ -26,7 +26,7 @@ const Statistics = () => {
 										<h3>
 											<span>715</span>
 										</h3>
-										<p className="text-muted font-15 mb-0">Total Tasks</p>
+										<p className="text-muted font-15 mb-0"> O R P</p>
 									</Card.Body>
 								</Card>
 							</Col>
@@ -38,7 +38,7 @@ const Statistics = () => {
 										<h3>
 											<span>31</span>
 										</h3>
-										<p className="text-muted font-15 mb-0">Members</p>
+										<p className="text-muted font-15 mb-0">BOMBA</p>
 									</Card.Body>
 								</Card>
 							</Col>
@@ -51,7 +51,7 @@ const Statistics = () => {
 											<span>93%</span>
 											<i className="mdi mdi-arrow-up text-success"></i>
 										</h3>
-										<p className="text-muted font-15 mb-0">Productivity</p>
+										<p className="text-muted font-15 mb-0">LUCES</p>
 									</Card.Body>
 								</Card>
 							</Col>
