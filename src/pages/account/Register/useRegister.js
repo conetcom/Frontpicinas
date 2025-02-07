@@ -26,28 +26,23 @@ export default function useRegister() {
 		password2: yup.string().oneOf([yup.ref('password1')], 'Passwords must match'),
 		rol: yup.string().required(t('Please enter rol administrador or cliente')),
 	});
-	const register = async (data) => { // Cambia { data } por data directamente
-        const { username, email, password1, rol } = data; // Desestructura los campos directamente
-        setLoading(true);
 
-	/*const register = async ({ data }) => {
+	const register = async (data ) => {
 		const { username, email, password1, rol} = data;
-		setLoading(true);*/
+		setLoading(true);
 		try {
 			const res = await authApi.register({
 				username,
 				email,
 				password: password1,
-				rol:rol
+				rol,
 			});
-			
 			if (res.data) {
-				
 				showNotification({
 					message: 'Registration successful. Welcome aboard!',
 					type: 'success',
 				});
-				navigate('/account/login');
+				navigate('/account/confirm-mail');
 			}
 		} catch (e) {
 			showNotification({ message: e.toString(), type: 'error' });

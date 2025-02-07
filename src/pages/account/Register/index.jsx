@@ -45,17 +45,16 @@ export default function Register() {
 					onSubmit={register}
 					schema={schema}
 					defaultValues={{
-						email: '',
-						username: '',
-						password1: '',
-						password2: '',
-						rol: 'cliente',
+						email: 'hyper@coderthemes.com',
+						username: 'Hyper',
+						password1: 'HyperCoderthemes',
+						password2: 'HyperCoderthemes',
 					}}
 				>
 					<TextInput
 						label={t('Full name')}
 						type="text"
-						name="HyperCoderthemes"
+						name="username"
 						placeholder={t('Enter your name')}
 						containerClass="mb-3"
 					/>
@@ -86,6 +85,7 @@ export default function Register() {
 						placeholder={t('Enter rol cliente o administrador')}
 						containerClass="mb-3"
 					/>
+
 
 					<CheckInput
 						name="checkbox"

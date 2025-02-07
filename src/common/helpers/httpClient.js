@@ -4,7 +4,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const ErrorCodeMessages = {
 	401: 'Invalid credentials',
 	403: 'Access Forbidden',
-	404: 'Resource or page not found 3',
+	404: 'Resource or page not found',
 };
 
 function HttpClient() {
@@ -31,7 +31,7 @@ function HttpClient() {
 
 	return {
 		get: (url, config = {}) => _httpClient.get(url, config),
-		post: (url, data, config = {}) => _httpClient.post(url, data, config),		
+		post: (url, data, config = {}) => _httpClient.post(url, data, config),
 		patch: (url, config = {}) => _httpClient.patch(url, config),
 		put: (url, config = {}) => _httpClient.put(url, config),
 		delete: (url, config = {}) => _httpClient.delete(url, config),

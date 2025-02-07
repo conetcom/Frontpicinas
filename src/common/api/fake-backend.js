@@ -51,13 +51,13 @@ export default function configureFakeBackend() {
 				let params = JSON.parse(config.data);
 
 				// add new users
-				let [firstName, lastName] = params.fullname.split(' ');
+				//let [firstName] = params.fullname(' ');
 				let newUser = {
 					id: users.length + 1,
-					username: firstName,
+					username: params.username,
 					password: params.password,
-					firstName: firstName,
-					lastName: lastName,
+					//firstName: firstName,
+					//lastName: lastName,
 					role: 'Admin',
 					token: TOKEN,
 				};

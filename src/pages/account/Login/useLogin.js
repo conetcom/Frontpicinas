@@ -26,12 +26,11 @@ export default function useLogin() {
 		setLoading(true);
 		try {
 			const res = await authApi.login(values);
-						if (res.data.token) {
+			if (res.data.token) {
 				saveSession({ ...(res.data ?? {}), token: res.data.token });
 				navigate(redirectUrl);
 			}
 		} catch (error) {
-			console.log(authApi);
 			showNotification({ message: error.toString(), type: 'error' });
 		} finally {
 			setLoading(false);

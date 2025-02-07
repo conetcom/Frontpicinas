@@ -2,9 +2,7 @@ import HttpClient from '../helpers/httpClient';
 
 function AuthService() {
 	return {
-	
 		login: (values) => {
-			
 			return HttpClient.post('/login/', values);
 		},
 		logout() {

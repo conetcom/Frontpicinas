@@ -31,7 +31,7 @@ export default function AccountWrapper({ bottomLinks, children }) {
 			</div>
 			<footer className="footer footer-alt">
 				2018 - {new Date().getFullYear()} © Hyper -
-				<Link to="https://conetweb.com/" target="_blank">
+				<Link to="https://coderthemes.com/" target="_blank">
 					Coderthemes.com
 				</Link>
 			</footer>

@@ -12,6 +12,7 @@ import './assets/scss/Saas.scss';
 // import './assets/scss/Creative.scss';
 
 //configureFakeBackend();
+
 const App = () => {
 	return (
 		<ThemeProvider>

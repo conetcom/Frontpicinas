@@ -43,7 +43,7 @@ export default function Login() {
 				<Form
 					onSubmit={login}
 					schema={loginFormSchema}
-					defaultValues={{ email: '', password: '' }}
+					defaultValues={{ email: 'hyper@coderthemes.com', password: 'Hyper' }}
 				>
 					<Row>
 						<Col>
