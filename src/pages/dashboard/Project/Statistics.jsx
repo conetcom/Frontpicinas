@@ -24,68 +24,69 @@ const Statistics = () => {
 						<Row className="g-0">
 							{/* Iterar sobre las estadísticas y renderizar cada una */}
 							{statistics.map((stat, index) => (
-								<Col key={index} sm={6} lg={3}>
-									<Card className="shadow-none m-0">
-										<Card.Body className="text-center">
-											<i className="ri-briefcase-line text-muted font-24"></i>
-											<h3>
-												<span>{stat.ph}</span> {/* Mostrar valor de pH */}
-											</h3>
-											<p className="text-muted font-15 mb-0">P H</p>
-										</Card.Body>
-									</Card>
-								</Col>
+								<>
+									<Col key={index} sm={6} lg={2}>
+										<Card className="shadow-none m-0">
+											<Card.Body className="text-center">
+												<i className="ri-briefcase-line text-muted font-24"></i>
+												<h3>
+													<span>{stat.ph}</span> {/* Mostrar valor de pH */}
+												</h3>
+												<p className="text-muted font-15 mb-0">P H</p>
+											</Card.Body>
+										</Card>
+									</Col>
+
+									<Col sm={6} lg={2}>
+										<Card className="shadow-none m-0 border-start">
+											<Card.Body className="text-center">
+												<i className="ri-list-check-2 text-muted font-24"></i>
+												<h3>
+													<span>{stat.orp}</span> {/* Mostrar valor de ORP */}
+												</h3>
+												<p className="text-muted font-15 mb-0">O R P</p>
+											</Card.Body>
+										</Card>
+									</Col>
+
+									<Col sm={6} lg={2}>
+										<Card className="shadow-none m-0 border-start">
+											<Card.Body className="text-center">
+												<i className={`ri-group-line text-muted font-24 ${stat.st_bombas ? "text-success" : "text-danger"}`}></i>
+												<h3>
+													<span>{stat.st_bombas ? "Encendido" : "Apagado"}</span> {/* Mostrar estado de BOMBA */}
+												</h3>
+												<p className="text-muted font-15 mb-0">BOMBA</p>
+											</Card.Body>
+										</Card>
+									</Col>
+
+									<Col sm={6} lg={2}>
+										<Card className="shadow-none m-0 border-start">
+											<Card.Body className="text-center">
+												<i className={`ri-lightbulb-line text-muted font-24 ${stat.st_light ? "text-success" : "text-danger"}`}></i>
+												<h3>
+													<span>{stat.st_light ? "Encendido" : "Apagado"}</span> {/* Mostrar estado de LUCES */}
+												</h3>
+												<p className="text-muted font-15 mb-0">LUCES</p>
+											</Card.Body>
+										</Card>
+									</Col>
+
+									{/* Nueva columna para mostrar la fecha de registro */}
+									<Col sm={6} lg={4}>
+										<Card className="shadow-none m-0 border-start">
+											<Card.Body className="text-center">
+												<i className="ri-calendar-line text-muted font-24"></i>
+												<h3>
+													<span>{new Date(stat.fecha_registro).toLocaleDateString()}</span> {/* Mostrar fecha de registro */}
+												</h3>
+												<p className="text-muted font-15 mb-0">Fecha de Registro</p>
+											</Card.Body>
+										</Card>
+									</Col>
+								</>
 							))}
-
-							<Col sm={6} lg={3}>
-								<Card className="shadow-none m-0 border-start">
-									<Card.Body className="text-center">
-										<i className="ri-list-check-2 text-muted font-24"></i>
-										<h3>
-											<span>{statistics.length > 0 ? statistics[0].orp : 'N/A'}</span> {/* Mostrar valor de ORP */}
-										</h3>
-										<p className="text-muted font-15 mb-0">O R P</p>
-									</Card.Body>
-								</Card>
-							</Col>
-
-							{/* Mostrar el valor de st_bombas como texto o ícono */}
-							<Col sm={6} lg={3}>
-								<Card className="shadow-none m-0 border-start">
-									<Card.Body className="text-center">
-										<i className="ri-group-line text-muted font-24"></i>
-										<h3>
-											<span>
-												{statistics.length > 0 
-													? (statistics[0].st_bombas 
-														? "Encendido"   // Si es true, mostrar "Encendido"
-														: "Apagado")    // Si es false, mostrar "Apagado"
-													: 'N/A'}
-											</span>
-										</h3>
-										<p className="text-muted font-15 mb-0">BOMBA</p>
-									</Card.Body>
-								</Card>
-							</Col>
-
-							{/* Mostrar el valor de st_light como texto o ícono */}
-							<Col sm={6} lg={3}>
-								<Card className="shadow-none m-0 border-start">
-									<Card.Body className="text-center">
-										<i className="ri-line-chart-line text-muted font-24"></i>
-										<h3>
-											<span>
-												{statistics.length > 0 
-													? (statistics[0].st_light 
-														? "Encendido"    // Si es true, mostrar "Encendido"
-														: "Apagado")     // Si es false, mostrar "Apagado"
-													: 'N/A'}
-											</span>
-										</h3>
-										<p className="text-muted font-15 mb-0">LUCES</p>
-									</Card.Body>
-								</Card>
-							</Col>
 						</Row>
 					</Card.Body>
 				</Card>
