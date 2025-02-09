@@ -73,13 +73,13 @@ const Statistics = () => {
 										</Card>
 									</Col>
 
-									{/* Nueva columna para mostrar la fecha de registro */}
+									{/* Nueva columna para mostrar la fecha de registro como timestamp */}
 									<Col sm={6} lg={4}>
 										<Card className="shadow-none m-0 border-start">
 											<Card.Body className="text-center">
 												<i className="ri-calendar-line text-muted font-24"></i>
 												<h3>
-													<span>{new Date(stat.fecha_registro).toLocaleDateString()}</span> {/* Mostrar fecha de registro */}
+													<span>{new Date(stat.fecha_registro).toLocaleString()}</span> {/* Mostrar fecha y hora (timestamp) */}
 												</h3>
 												<p className="text-muted font-15 mb-0">Fecha de Registro</p>
 											</Card.Body>
