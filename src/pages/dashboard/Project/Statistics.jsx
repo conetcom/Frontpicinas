@@ -1,32 +1,52 @@
 import { Card, Row, Col } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Statistics = () => {
+	const [statistics, setStatistics] = useState([]);
+
+	useEffect(() => {
+		// Obtener datos desde la API
+		axios.get('https://piscina-api.onrender.com/api/st_piscinas')
+			.then(response => {
+				setStatistics(response.data);
+			})
+			.catch(error => {
+				console.error('Error al obtener los datos:', error);
+			});
+	}, []);
+
 	return (
 		<Row>
 			<Col xs={12}>
 				<Card className="widget-inline">
 					<Card.Body className="p-0">
 						<Row className="g-0">
-							<Col sm={6} lg={3}>
-								<Card className="shadow-none m-0">
-									<Card.Body className="text-center">
-										<i className="ri-briefcase-line text-muted font-24"></i>
-										<h3>
-											<span>29</span>
-										</h3>
-										<p className="text-muted font-15 mb-0">P H</p>
-									</Card.Body>
-								</Card>
-							</Col>
+							{/* Iterar sobre las estadísticas y renderizar cada una */}
+							{statistics.map((stat, index) => (
+								<Col key={index} sm={6} lg={3}>
+									<Card className="shadow-none m-0">
+										<Card.Body className="text-center">
+											{/* Icono dinámico y valores */}
+											<i className="ri-briefcase-line text-muted font-24"></i>
+											<h3>
+												<span>{stat.ph}</span> {/* Mostrar valor de pH */}
+											</h3>
+											<p className="text-muted font-15 mb-0">P H</p>
+										</Card.Body>
+									</Card>
+								</Col>
+							))}
 
+							{/* Puedes añadir más columnas si quieres mostrar más datos */}
 							<Col sm={6} lg={3}>
 								<Card className="shadow-none m-0 border-start">
 									<Card.Body className="text-center">
 										<i className="ri-list-check-2 text-muted font-24"></i>
 										<h3>
-											<span>715</span>
+											<span>{statistics.length > 0 ? statistics[0].orp : 'N/A'}</span> {/* Mostrar valor de ORP */}
 										</h3>
-										<p className="text-muted font-15 mb-0"> O R P</p>
+										<p className="text-muted font-15 mb-0">O R P</p>
 									</Card.Body>
 								</Card>
 							</Col>
@@ -36,7 +56,7 @@ const Statistics = () => {
 									<Card.Body className="text-center">
 										<i className="ri-group-line text-muted font-24"></i>
 										<h3>
-											<span>31</span>
+											<span>{statistics.length > 0 ? statistics[0].st_bombas : 'N/A'}</span> {/* Mostrar valor de bombas */}
 										</h3>
 										<p className="text-muted font-15 mb-0">BOMBA</p>
 									</Card.Body>
@@ -48,13 +68,14 @@ const Statistics = () => {
 									<Card.Body className="text-center">
 										<i className="ri-line-chart-line text-muted font-24"></i>
 										<h3>
-											<span>93%</span>
+											<span>{statistics.length > 0 ? statistics[0].st_light : 'N/A'}</span> {/* Mostrar valor de luces */}
 											<i className="mdi mdi-arrow-up text-success"></i>
 										</h3>
 										<p className="text-muted font-15 mb-0">LUCES</p>
 									</Card.Body>
 								</Card>
 							</Col>
+
 						</Row>
 					</Card.Body>
 				</Card>
@@ -64,3 +85,4 @@ const Statistics = () => {
 };
 
 export default Statistics;
+
