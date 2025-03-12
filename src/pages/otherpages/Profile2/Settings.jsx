@@ -14,7 +14,7 @@ const PersonalInfo = () => {
 					<TextInput
 						label="First Name"
 						type="text"
-						name="firstname"
+						name="username"
 						placeholder="Enter first name"
 						containerClass={'mb-3'}
 						key="firstname"
