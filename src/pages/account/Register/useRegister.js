@@ -28,11 +28,12 @@ export default function useRegister() {
 	});
 
 	const register = async (data ) => {
-		const { username, email, password1, rol} = data;
+		const { username, lastName, email, password1, rol} = data;
 		setLoading(true);
 		try {
 			const res = await authApi.register({
 				username,
+				lastName,
 				email,
 				password: password1,
 				rol,
