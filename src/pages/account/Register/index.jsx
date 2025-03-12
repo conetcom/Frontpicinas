@@ -62,7 +62,7 @@ export default function Register() {
 					<TextInput
 						label={t('Last name')}
 						type="text"
-						name="username"
+						name="lastname"
 						placeholder={t('Enter your name')}
 						containerClass="mb-3"
 					/>
