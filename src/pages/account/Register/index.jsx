@@ -62,8 +62,8 @@ export default function Register() {
 					<TextInput
 						label={t('Last name')}
 						type="text"
-						name="lastname"
-						placeholder={t('Enter your Last name')}
+						name="username"
+						placeholder={t('Enter your name')}
 						containerClass="mb-3"
 					/>
 					<TextInput
@@ -86,22 +86,15 @@ export default function Register() {
 						placeholder={t('Confirm password')}
 						containerClass="mb-3"
 					/>
+				<TextInput
+						label={t('rol')}
+						type="text"
+						name="rol"
+						placeholder={t('usuario o administrador')}
+						
+						containerClass="mb-3"
+					/>
 				
-				
-				<div className="mb-3">
-    <label htmlFor="rol">{t('rol')}</label>
-    <select
-      name="rol"
-      className="form-control"
-      defaultValue=""
-    >
-      <option value="" disabled>{t('Select rol')}</option>
-      <option value="usuario">{t('Usuario')}</option>
-      <option value="administrador">{t('Administrador')}</option>
-    </select>
-  </div>
-
-
 					<CheckInput
 						name="checkbox"
 						type="checkbox"
