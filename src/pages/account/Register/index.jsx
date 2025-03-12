@@ -47,6 +47,7 @@ export default function Register() {
 					defaultValues={{
 						email: 'info@conetweb.com',
 						username: 'conetcom',
+						lastname: 'conetcom',
 						password1: 'info2025',
 						password2: 'info2025',
 					}}
@@ -61,7 +62,7 @@ export default function Register() {
 					<TextInput
 						label={t('Last name')}
 						type="text"
-						name="lastName"
+						name="lastname"
 						placeholder={t('Enter your Last name')}
 						containerClass="mb-3"
 					/>

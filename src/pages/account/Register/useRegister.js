@@ -17,6 +17,7 @@ export default function useRegister() {
 
 	const schema = yup.object().shape({
 		username: yup.string().required(t('Please enter name')),
+		lastname: yup.string().required(t('Please enter Last name')),
 		email: yup.string().email('Please enter valid email').required(t('Please enter email')),
 		password1: yup
 			.string()
@@ -28,12 +29,12 @@ export default function useRegister() {
 	});
 
 	const register = async (data ) => {
-		const { username, lastName, email, password1, rol} = data;
+		const { username, lastname, email, password1, rol} = data;
 		setLoading(true);
 		try {
 			const res = await authApi.register({
 				username,
-				lastName,
+				lastname,
 				email,
 				password: password1,
 				rol,
