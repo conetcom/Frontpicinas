@@ -65,9 +65,10 @@ const notifications = [
 // get the profilemenu
 const profileMenus = [
 	{
+		
 		label: 'My Account',
 		icon: 'mdi mdi-account-circle',
-		redirectTo: '#',
+		redirectTo: '/pages/profile2',
 	},
 	{
 		label: 'Settings',

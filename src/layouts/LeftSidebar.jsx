@@ -6,9 +6,9 @@ import AppMenu from './Menu';
 // assets
 import profileImg from '@/assets/images/users/avatar-1.jpg';
 import logo from '@/assets/images/logo.png';
-import logoDark from '@/assets/images/logo-dark.png';
-import logoSm from '@/assets/images/logo-sm.png';
-import logoDarkSm from '@/assets/images/logo-dark-sm.png';
+import logoDark from '@/assets/images/Admin Piscinas.png';
+import logoSm from '@/assets/images/Admin Piscinas.png';
+import logoDarkSm from '@/assets/images/Admin Piscinas.png';
 import { getMenuItems } from './utils/menu';
 
 const UserBox = () => {
@@ -21,7 +21,7 @@ const UserBox = () => {
 					height="42"
 					className="rounded-circle shadow-sm"
 				/>
-				<span className="leftbar-user-name mt-2">Dominic Keller</span>
+				<span className="leftbar-user-name mt-2">Wilmer Keller</span>
 			</Link>
 		</div>
 	);

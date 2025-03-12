@@ -45,14 +45,21 @@ export default function Register() {
 					onSubmit={register}
 					schema={schema}
 					defaultValues={{
-						email: 'hyper@coderthemes.com',
-						username: 'Hyper',
-						password1: 'HyperCoderthemes',
-						password2: 'HyperCoderthemes',
+						email: 'info@conetweb.com',
+						username: 'conetcom',
+						password1: 'info2025',
+						password2: 'info2025',
 					}}
 				>
 					<TextInput
-						label={t('Full name')}
+						label={t('Name')}
+						type="text"
+						name="username"
+						placeholder={t('Enter your name')}
+						containerClass="mb-3"
+					/>
+					<TextInput
+						label={t('Last name')}
 						type="text"
 						name="username"
 						placeholder={t('Enter your name')}
@@ -78,13 +85,20 @@ export default function Register() {
 						placeholder={t('Confirm password')}
 						containerClass="mb-3"
 					/>
-					<TextInput
-						label={t('rol')}
-						type="text"
-						name="rol"
-						placeholder={t('Enter rol cliente o administrador')}
-						containerClass="mb-3"
-					/>
+				
+				
+				<div className="mb-3">
+    <label htmlFor="rol">{t('rol')}</label>
+    <select
+      name="rol"
+      className="form-control"
+      defaultValue=""
+    >
+      <option value="" disabled>{t('Select rol')}</option>
+      <option value="usuario">{t('Usuario')}</option>
+      <option value="administrador">{t('Administrador')}</option>
+    </select>
+  </div>
 
 
 					<CheckInput
@@ -93,12 +107,14 @@ export default function Register() {
 						containerClass="mb-2"
 						label={
 							<>
-								I accept
-								<span className="text-muted cursor-pointer">
-									Terms and Conditions
-								</span>
+							  I accept
+							  <span className="text-muted cursor-pointer">
+								<Link to="/terms" target="_blank">
+								  Terms and Conditions
+								</Link>
+							  </span>
 							</>
-						}
+						  }
 						defaultChecked
 					/>
 

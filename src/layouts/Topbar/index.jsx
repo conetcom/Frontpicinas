@@ -10,11 +10,11 @@ import MaximizeScreen from './MaximizeScreen';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 // assets
-import userImage from '@/assets/images/users/avatar-1.jpg';
-import logo from '@/assets/images/logo.png';
-import logoDark from '@/assets/images/logo-dark.png';
-import logoSm from '@/assets/images/logo-sm.png';
-import logoDarkSm from '@/assets/images/logo-dark-sm.png';
+import userImage from '@/assets/images/users/avatar-2.jpg';
+import logo from '@/assets/images/Admin Piscinas.png';
+import logoDark from '@/assets/images/Admin Piscinas.png';
+import logoSm from '@/assets/images/Admin Piscinas.png';
+import logoDarkSm from '@/assets/images/Admin Piscinas.png';
 import { ThemeSettings, useThemeContext } from '@/common';
 import useThemeCustomizer from '@/components/ThemeCustomizer/useThemeCustomizer';
 import { useViewport } from '@/hooks';
@@ -164,7 +164,7 @@ const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 						<ProfileDropdown
 							userImage={userImage}
 							menuItems={profileMenus}
-							username={'Dominic Keller'}
+							username={'wilmer Martinez'}
 							userTitle={'Founder'}
 						/>
 					</li>

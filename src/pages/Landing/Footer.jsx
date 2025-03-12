@@ -126,7 +126,7 @@ const Footer = () => {
 					<Col lg={12}>
 						<div className="mt-5">
 							<p className="text-light text-opacity-50 mt-4 text-center mb-0">
-								© 2018 - {new Date().getFullYear()} Hyper. Design and coded by
+								© 2018 - {new Date().getFullYear()} Proyecto Piscinas 
 								Coderthemes
 							</p>
 						</div>
