@@ -29,7 +29,6 @@ export default function useLogin() {
 			if (res.data.token) {
 				localStorage.setItem('token', res.data.token);
 				localStorage.setItem('user', JSON.stringify(res.data.user));
-				console.log(data.user);
 				saveSession({ ...(res.data ?? {}), token: res.data.token });
 				navigate(redirectUrl);
 			}
