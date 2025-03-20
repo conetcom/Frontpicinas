@@ -1,46 +1,118 @@
+import React, { useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import profileImg from '@/assets/images/users/avatar-1.jpg';
+import { useAuthContext } from '@/common/context';
+import axios from 'axios'; // Para hacer la solicitud al backend
+import profileImg from '@/assets/images/users/avatar-3.jpg'; // Imagen predeterminada
 
 const UserBox = () => {
+	// Obtener la información del usuario y estado de autenticación desde el contexto
+	const { user, isAuthenticated } = useAuthContext();
+console.log(user);
+	// Estado para la imagen seleccionada
+	const [selectedFile, setSelectedFile] = useState(null);
+
+	// Estado para mostrar el estado de la subida
+	const [uploadStatus, setUploadStatus] = useState('');
+
+	// Estado para la imagen actual del perfil (inicia con la del contexto o la predeterminada)
+	const [profileImage, setProfileImage] = useState(user?.profileImage || profileImg);
+
+	// Manejar el cambio de la imagen seleccionada
+	const handleFileChange = (event) => {
+		setSelectedFile(event.target.files[0]);
+	};
+
+	// Enviar la imagen al backend
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+		// Verificar si hay una imagen seleccionada
+		if (!selectedFile) {
+			setUploadStatus('Por favor selecciona una imagen.');
+			return;
+		}
+
+		// Crear un objeto FormData para enviar el archivo
+		const formData = new FormData();
+		formData.append('foto_perfil_url', selectedFile);
+		formData.append('user_id', user?.id); // Aquí usamos el ID real del usuario desde el contexto
+
+		try {
+			// Hacer la solicitud POST al backend
+			const response = await axios.post('http://localhost:5001/api/user/upload-profile-pic', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+
+			if (response.data.success) {
+				// Actualizar la imagen en el frontend con la URL recibida
+				setProfileImage(response.data.data.user.profileImage);
+
+				// Actualizar el estado de la subida
+				setUploadStatus('Foto de perfil actualizada exitosamente.');
+			} else {
+				setUploadStatus('Hubo un problema al actualizar la foto de perfil.');
+			}
+		} catch (error) {
+			console.error('Error al subir la imagen:', error);
+			setUploadStatus('Error al subir la imagen.');
+		}
+	};
+
 	return (
 		<Card className="text-center">
 			<Card.Body>
-				<img src={profileImg} className="rounded-circle avatar-lg img-thumbnail" alt="" />
-				<h4 className="mb-0 mt-2">Dominic Keller</h4>
-				<p className="text-muted font-14">Founder</p>
-				<button type="button" className="btn btn-success btn-sm mb-2">
-					Follow
-				</button>
-				<button type="button" className="btn btn-danger btn-sm mb-2">
-					Message
-				</button>
+				{/* Imagen de perfil */}
+				<img
+					src={profileImage} // Mostrar la imagen de perfil actualizada o del contexto
+					className="rounded-circle avatar-lg img-thumbnail"
+					alt="Imagen de perfil"
+				/>
+				<h4 className="mb-0 mt-2">{user?.name || 'Dominic Keller'}</h4> {/* Nombre del usuario */}
+				<p className="text-muted font-14">{user?.rol || 'Founder'}</p> {/* Rol del usuario */}
+
+				{/* Formulario para cambiar la imagen */}
+				<form onSubmit={handleSubmit}>
+					<div>
+						<label htmlFor="profilePicUpload">Cambiar Foto de Perfil:</label>
+						<input
+							type="file"
+							id="profilePicUpload"
+							accept="image/*"
+							onChange={handleFileChange}
+							className="form-control mb-2"
+						/>
+					</div>
+					<button type="submit" className="btn btn-primary mb-2">
+						Actualizar Foto
+					</button>
+				</form>
+				{uploadStatus && <p>{uploadStatus}</p>}
+
+				{/* Información adicional del usuario */}
 				<div className="text-start mt-3">
 					<h4 className="font-13 text-uppercase">About Me :</h4>
 					<p className="text-muted font-13 mb-3">
-						Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since
-						the 1500s, when an unknown printer took a galley of type.
+						{user?.bio || 'Hi, I am a user and this is my bio.'} {/* Biografía del usuario */}
 					</p>
 					<p className="text-muted mb-2 font-13">
 						<strong>Full Name :</strong>
-						<span className="ms-2">Geneva D. McKnight</span>
-					</p>
-
-					<p className="text-muted mb-2 font-13">
-						<strong>Mobile :</strong>
-						<span className="ms-2">(123) 123 1234</span>
+						<span className="ms-2">{user?.name} {user?.lastname}</span> {/* Nombre completo */}
 					</p>
 
 					<p className="text-muted mb-2 font-13">
 						<strong>Email :</strong>
-						<span className="ms-2 ">user@email.domain</span>
+						<span className="ms-2">{user?.email || 'user@email.domain'}</span> {/* Email del usuario */}
 					</p>
 
 					<p className="text-muted mb-1 font-13">
 						<strong>Location :</strong>
-						<span className="ms-2">USA</span>
+						<span className="ms-2">USA</span> {/* Puedes agregar la ubicación si está disponible */}
 					</p>
 				</div>
+
 				<ul className="social-list list-inline mt-3 mb-0">
 					<li className="list-inline-item">
 						<Link to="" className="social-list-item border-primary text-primary">
