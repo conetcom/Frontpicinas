@@ -29,7 +29,7 @@ const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 	const { sideBarType } = useThemeCustomizer();
 
 	const { width } = useViewport();
-	const [userImage] = useState(user?.user?.profileImage || profileImg);
+	const [userImage] = useState(user?.profileImage || profileImg);
 
 	/**
 	 * Toggle the leftmenu when having mobile screen
@@ -169,8 +169,8 @@ const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 						<ProfileDropdown
 							userImage={userImage}
 							menuItems={profileMenus}
-							username={user?.user?.name}
-							userTitle={user?.user?.rol}
+							username={user?.name}
+							userTitle={user?.rol}
 						/>
 					</li>
 				</ul>
