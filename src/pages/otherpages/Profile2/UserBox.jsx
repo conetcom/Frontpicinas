@@ -40,7 +40,7 @@ const UserBox = () => {
 
 		try {
 			// Hacer la solicitud POST al backend
-			const response = await axios.post('http://localhost:5001/api/user/upload-profile-pic', formData, {
+			const response = await axios.post('https://piscina-api.onrender.com/api/user/upload-profile-pic', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},
