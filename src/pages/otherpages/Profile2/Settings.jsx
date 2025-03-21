@@ -20,7 +20,7 @@ const PersonalInfo = () => {
 						label="First Name"
 						type="text"
 						name="username"
-						placeholder={user?.username}
+						placeholder="{user?.username}"
 						containerClass={'mb-3'}
 						key="firstnameuser"
 					/>
@@ -30,7 +30,7 @@ const PersonalInfo = () => {
 						label="Last Name"
 						type="text"
 						name="lastname"
-						placeholder={user?.lastname}
+						placeholder="{user?.lastname}"
 						containerClass={'mb-3'}
 						key="lastname"
 					/>
@@ -41,7 +41,7 @@ const PersonalInfo = () => {
 					<TextAreaInput
 						label="Bio"
 						name="userbio"
-						placeholder={user?.userbio}
+						placeholder="{user?.userbio}"
 						rows={4}
 						containerClass={'mb-3'}
 						key="userbio"
