@@ -8,8 +8,7 @@ import { useState } from 'react'; // Asegúrate de importar useState
 const UserBox = () => {
 	// Obtener la información del usuario y estado de autenticación desde el contexto
 	const { user, isAuthenticated } = useAuthContext();
-	console.log(user);
-
+	
 	// Estado para la imagen seleccionada
 	const [selectedFile, setSelectedFile] = useState(null);
 

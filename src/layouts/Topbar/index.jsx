@@ -10,7 +10,9 @@ import MaximizeScreen from './MaximizeScreen';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 // assets
-import userImage from '@/assets/images/users/avatar-2.jpg';
+import React, { useState } from 'react';
+import { useAuthContext } from '@/common/context';
+import profileImg from '@/assets/images/users/avatar-3.jpg';
 import logo from '@/assets/images/Admin Piscinas.png';
 import logoDark from '@/assets/images/Admin Piscinas.png';
 import logoSm from '@/assets/images/Admin Piscinas.png';
@@ -20,11 +22,14 @@ import useThemeCustomizer from '@/components/ThemeCustomizer/useThemeCustomizer'
 import { useViewport } from '@/hooks';
 
 const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
+	const { user, isAuthenticated } = useAuthContext();
+	console.log(user);
 	const { settings, updateSettings, updateSidebar } = useThemeContext();
 
 	const { sideBarType } = useThemeCustomizer();
 
 	const { width } = useViewport();
+	const [userImage] = useState(user?.user?.profileImage || profileImg);
 
 	/**
 	 * Toggle the leftmenu when having mobile screen
@@ -164,8 +169,8 @@ const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 						<ProfileDropdown
 							userImage={userImage}
 							menuItems={profileMenus}
-							username={'wilmer Martinez'}
-							userTitle={'Founder'}
+							username={user?.user?.name}
+							userTitle={user?.user?.rol}
 						/>
 					</li>
 				</ul>
