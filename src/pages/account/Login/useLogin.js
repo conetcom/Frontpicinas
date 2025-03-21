@@ -39,5 +39,5 @@ export default function useLogin() {
 		}
 	};
 
-	return { loading, login, redirectUrl, isAuthenticated };
+	return { loading, login, redirectUrl, isAuthenticated, saveSession };
 }
