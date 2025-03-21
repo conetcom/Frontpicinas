@@ -17,7 +17,7 @@ const UserBox = () => {
 	const [uploadStatus, setUploadStatus] = useState('');
 
 	// Estado para la imagen actual del perfil (inicia con la del contexto o la predeterminada)
-	const [profileImage, setProfileImage] = useState(user?.user?.profileImage || profileImg);
+	const [profileImage, setProfileImage] = useState(user?.profileImage || profileImg);
 
 	// Manejar el cambio de la imagen seleccionada
 	const handleFileChange = (event) => {
@@ -37,7 +37,7 @@ const UserBox = () => {
 		// Crear un objeto FormData para enviar el archivo
 		const formData = new FormData();
 		formData.append('foto_perfil_url', selectedFile);
-		formData.append('user_id', user?.user?.id); // Aquí usamos el ID real del usuario desde el contexto
+		formData.append('user_id',user?.id); // Aquí usamos el ID real del usuario desde el contexto
 
 		try {
 			// Hacer la solicitud POST al backend
@@ -49,7 +49,7 @@ const UserBox = () => {
 
 			if (response.data.success) {
 				// Actualizar la imagen en el frontend con la URL recibida
-				setProfileImage(response.data.data.user.profileImage);
+				setProfileImage(response.data.data.profileImage);
 
 				// Actualizar el estado de la subida
 				setUploadStatus('Foto de perfil actualizada exitosamente.');
@@ -71,8 +71,8 @@ const UserBox = () => {
 					className="rounded-circle avatar-lg img-thumbnail"
 					alt="Imagen de perfil"
 				/>
-				<h4 className="mb-0 mt-2">{user?.user?.name || 'Dominic Keller'}</h4> {/* Nombre del usuario */}
-				<p className="text-muted font-14">{user?.user?.rol || 'Founder'}</p> {/* Rol del usuario */}
+				<h4 className="mb-0 mt-2">{user?.name || 'Dominic Keller'}</h4> {/* Nombre del usuario */}
+				<p className="text-muted font-14">{user?.rol || 'Founder'}</p> {/* Rol del usuario */}
 
 				{/* Formulario para cambiar la imagen */}
 				<form onSubmit={handleSubmit}>
@@ -96,21 +96,21 @@ const UserBox = () => {
 				<div className="text-start mt-3">
 					<h4 className="font-13 text-uppercase">About Me :</h4>
 					<p className="text-muted font-13 mb-3">
-						{user?.user?.userbio || 'Hi, I am a user and this is my bio.'} {/* Biografía del usuario */}
+						{user?.userbio || 'Hi, I am a user and this is my bio.'} {/* Biografía del usuario */}
 					</p>
 					<p className="text-muted mb-2 font-13">
 						<strong>Full Name :</strong>
-						<span className="ms-2">{user?.user?.name} {user?.user?.lastname}</span> {/* Nombre completo */}
+						<span className="ms-2">{user?.name} {user?.user?.lastname}</span> {/* Nombre completo */}
 					</p>
 
 					<p className="text-muted mb-2 font-13">
 						<strong>Email :</strong>
-						<span className="ms-2">{user?.user?.email || 'user@email.domain'}</span> {/* Email del usuario */}
+						<span className="ms-2">{user?.email || 'user@email.domain'}</span> {/* Email del usuario */}
 					</p>
 
 					<p className="text-muted mb-1 font-13">
 						<strong>Location :</strong>
-						<span className="ms-2">USA</span> {/* Puedes agregar la ubicación si está disponible */}
+						<span className="ms-2">{user?.location || 'USA'}</span> {/* Puedes agregar la ubicación si está disponible */}
 					</p>
 				</div>
 
