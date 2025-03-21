@@ -2,8 +2,13 @@ import { Row, Col, InputGroup, Form } from 'react-bootstrap';
 import { Form as RHForm } from '@/components';
 import { Link } from 'react-router-dom';
 import { PasswordInput, TextAreaInput, TextInput } from '@/components';
+import { useAuthContext } from '@/common/context';
+//import { useState } from 'react';
+
 
 const PersonalInfo = () => {
+	const { user} = useAuthContext();
+
 	return (
 		<>
 			<h5 className="mb-4 text-uppercase">
@@ -15,9 +20,9 @@ const PersonalInfo = () => {
 						label="First Name"
 						type="text"
 						name="username"
-						placeholder="Enter first name"
+						placeholder={user?.username}
 						containerClass={'mb-3'}
-						key="firstname"
+						key="firstnameuser"
 					/>
 				</Col>
 				<Col md={6}>
@@ -25,7 +30,7 @@ const PersonalInfo = () => {
 						label="Last Name"
 						type="text"
 						name="lastname"
-						placeholder="Enter last name"
+						placeholder={user?.lastname}
 						containerClass={'mb-3'}
 						key="lastname"
 					/>
@@ -36,7 +41,7 @@ const PersonalInfo = () => {
 					<TextAreaInput
 						label="Bio"
 						name="userbio"
-						placeholder="Write something..."
+						placeholder={user?.userbio}
 						rows={4}
 						containerClass={'mb-3'}
 						key="userbio"

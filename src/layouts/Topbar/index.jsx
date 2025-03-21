@@ -22,7 +22,7 @@ import useThemeCustomizer from '@/components/ThemeCustomizer/useThemeCustomizer'
 import { useViewport } from '@/hooks';
 
 const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
-	const { user, isAuthenticated } = useAuthContext();
+	const { user } = useAuthContext();
 	console.log(user);
 	const { settings, updateSettings, updateSidebar } = useThemeContext();
 
