@@ -3,16 +3,83 @@ import { Form as RHForm } from '@/components';
 import { Link } from 'react-router-dom';
 import { PasswordInput, TextAreaInput, TextInput } from '@/components';
 import { useAuthContext } from '@/common/context';
-//import { useState } from 'react';
+import { useState } from 'react';
+
+const PersonalInfo = () => {
+const { user} = useAuthContext();
+console.log(user);
+  const [personalData, setPersonalData] = useState({
+    firstName: user?.name || '',
+    lastName: user?.lastname || '',
+    bio: user?.userbio || '',
+    email: user?.email || ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setPersonalData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handlePersonalInfoSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      await axios.post('/api/update-personal-info', personalData); // Cambia por el endpoint correcto
+      console.log('Información personal actualizada');
+    } catch (error) {
+      console.error('Error actualizando información personal', error);
+    }
+  };
+
+  return (
+    <RHForm onSubmit={handlePersonalInfoSubmit}>
+      <TextInput
+        label="First Name"
+        type="text"
+        name="firstName"
+        value={personalData.firstName}
+        onChange={handleInputChange}
+      />
+      <TextInput
+        label="Last Name"
+        type="text"
+        name="lastName"
+        value={personalData.lastName}
+        onChange={handleInputChange}
+      />
+      <TextAreaInput
+        label="Bio"
+        name="bio"
+        value={personalData.bio}
+        onChange={handleInputChange}
+        rows={4}
+      />
+      <TextInput
+        label="Email"
+        type="email"
+        name="email"
+        value={personalData.email}
+        onChange={handleInputChange}
+      />
+      <button type="submit" className="btn btn-success mt-2">
+        Save
+      </button>
+    </RHForm>
+  );
+};
 
 
+/*
 const PersonalInfo = () => {
 	const { user} = useAuthContext();
 
 	return (
 		<>
 			<h5 className="mb-4 text-uppercase">
-				<i className="mdi mdi-account-circle me-1"></i> Personal Info
+				<i className="mdi mdi-account-circle me-1"></i> Información Personal 
 			</h5>
 			<Row>
 				<Col md={6}>
@@ -79,13 +146,13 @@ const PersonalInfo = () => {
 			</Row>
 		</>
 	);
-};
+}; */
 
 const CompanyInfo = () => {
 	return (
 		<>
 			<h5 className="mb-3 text-uppercase bg-light p-2">
-				<i className="mdi mdi-office-building me-1"></i> Company Info
+				<i className="mdi mdi-office-building me-1"></i> Información Compañia
 			</h5>
 			<Row>
 				<Col md={6}>
@@ -100,12 +167,56 @@ const CompanyInfo = () => {
 				</Col>
 				<Col md={6}>
 					<TextInput
+						label="Email"
+						type="text"
+						name="email"
+						placeholder="Enter Email"
+						containerClass={'mb-3'}
+						key="email"
+					/>
+				</Col>
+			</Row>
+			<Row>
+				<Col md={6}>
+					<TextInput
+						label="Telefono"
+						type="text"
+						name="phone"
+						placeholder="Enter phone Number"
+						containerClass={'mb-3'}
+						key="phone"
+					/>
+				</Col>
+				<Col md={6}>
+					<TextInput
+						label="direccion"
+						type="text"
+						name="direccion"
+						placeholder="Enter Adress"
+						containerClass={'mb-3'}
+						key="direccion"
+					/>
+				</Col>
+			</Row>
+			<Row>
+				<Col md={6}>
+					<TextInput
+						label="Nit"
+						type="text"
+						name="nit"
+						placeholder="Enter NIT Number"
+						containerClass={'mb-3'}
+						key="nit"
+					/>
+				</Col>
+				<Col md={6}>
+					<TextInput
 						label="Website"
 						type="text"
-						name="cwebsite"
-						placeholder="Enter website url"
+						name="website"
+						placeholder="Enter Website"
 						containerClass={'mb-3'}
-						key="cwebsite"
+						key="Website"
 					/>
 				</Col>
 			</Row>
