@@ -40,6 +40,7 @@ console.log(user);
         label="First Name"
         type="text"
         name="firstName"
+		placeholder={firstName}
         value={personalData.firstName}
         onChange={handleInputChange}
       />
@@ -47,12 +48,14 @@ console.log(user);
         label="Last Name"
         type="text"
         name="lastName"
+		placeholder={lastName}
         value={personalData.lastName}
         onChange={handleInputChange}
       />
       <TextAreaInput
         label="Bio"
         name="bio"
+		placeholder={bio}
         value={personalData.bio}
         onChange={handleInputChange}
         rows={4}
@@ -61,6 +64,7 @@ console.log(user);
         label="Email"
         type="email"
         name="email"
+		placeholder={email}
         value={personalData.email}
         onChange={handleInputChange}
       />
