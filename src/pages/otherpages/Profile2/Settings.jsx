@@ -3,13 +3,41 @@ import { Form as RHForm } from '@/components';
 import { Link } from 'react-router-dom';
 import { PasswordInput, TextAreaInput, TextInput } from '@/components';
 import { useAuthContext } from '@/common/context';
-//import { useState } from 'react';
+import { useState } from 'react';
 
 
 const PersonalInfo = () => {
 	const { user} = useAuthContext();
 
+		const [personalData, setPersonalData] = useState({
+		  id: user?.id,
+		  firstName: user?.name || '',
+		  lastName: user?.lastname || '',
+		  bio: user?.userbio || '',
+		  email: user?.email || ''
+		});
+	  
+		const handleInputChange = (e) => {
+		  const { name, value } = e.target;
+		  setPersonalData((prevData) => ({
+			...prevData,
+			[name]: value,
+		  }));
+		};
+	  
+		const handlePersonalInfoSubmit = async (e) => {
+		  e.preventDefault();
+		  
+		  try {
+			await axios.post('https://piscina-api.onrender.com/api/user/update', personalData); // Cambia por el endpoint correcto
+			console.log('Información personal actualizada');
+		  } catch (error) {
+			console.error('Error actualizando información personal', error);
+		  }
+		};
+	
 	return (
+		<RHForm onSubmit={handlePersonalInfoSubmit}>
 		<>
 			<h5 className="mb-4 text-uppercase">
 				<i className="mdi mdi-account-circle me-1"></i> Personal Info
@@ -23,6 +51,8 @@ const PersonalInfo = () => {
 						placeholder= {user?.name}
 						containerClass={'mb-3'}
 						key="firstnameuser"
+						onChange={handleInputChange}
+
 					/>
 				</Col>
 				<Col md={6}>
@@ -33,6 +63,7 @@ const PersonalInfo = () => {
 						placeholder= {user?.lastname}
 						containerClass={'mb-3'}
 						key="lastname"
+						onChange={handleInputChange}
 					/>
 				</Col>
 			</Row>
@@ -45,39 +76,33 @@ const PersonalInfo = () => {
 						rows={4}
 						containerClass={'mb-3'}
 						key="userbio"
+						onChange={handleInputChange}
 					/>
 				</Col>
 			</Row>
 			<Row>
 				<Col md={6} className="mb-3">
-					<TextInput
-						label="Email Address"
-						type="email"
-						name="usermail"
-						placeholder="Enter email"
-						key="useremail"
-					/>
+					
 					<span className="form-text text-muted">
-						<small>
+						<h5>
 							If you want to change email please <Link to="">click</Link> here.
-						</small>
+						</h5>
 					</span>
 				</Col>
 				<Col md={6} className="mb-3">
-					<PasswordInput
-						label="Password"
-						name="userpassword"
-						placeholder="Enter password"
-						key="userpassword"
-					/>
+					
 					<span className="form-text text-muted">
-						<small>
+						<h5>
 							If you want to change password please <Link to="">click</Link> here.
-						</small>
+						</h5>
 					</span>
 				</Col>
 			</Row>
 		</>
+		<button type="submit" className="btn btn-success mt-2">
+        Save
+      </button>
+		</RHForm>
 	);
 };
 
@@ -132,6 +157,7 @@ const CompanyInfo = () => {
 				</Col>
 			</Row>
 		</>
+		
 	);
 };
 
