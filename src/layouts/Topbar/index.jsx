@@ -23,7 +23,7 @@ import { useViewport } from '@/hooks';
 
 const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 	const { user } = useAuthContext();
-	console.log(user);
+	
 	const { settings, updateSettings, updateSidebar } = useThemeContext();
 
 	const { sideBarType } = useThemeCustomizer();

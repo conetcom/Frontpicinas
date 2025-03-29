@@ -73,7 +73,7 @@ const profileMenus = [
 	{
 		label: 'Settings',
 		icon: 'mdi mdi-account-edit',
-		redirectTo: '#',
+		redirectTo: '/pages/profile2/settings.jsx',
 	},
 	{
 		label: 'Support',
