@@ -48,8 +48,8 @@ const UserBox = () => {
 
 			if (response.data.success) {
 				// Actualizar la imagen en el frontend con la URL recibida
-				setProfileImage(response.data.data.profileImage);
-
+				setProfileImage(response.data.profileImage);
+console.log(setProfileImage);
 				// Actualizar el estado de la subida
 				setUploadStatus('Foto de perfil actualizada exitosamente.');
 			} else {
