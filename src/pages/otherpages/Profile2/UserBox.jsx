@@ -7,7 +7,7 @@ import { useState } from 'react'; // Asegúrate de importar useState
 
 const UserBox = () => {
 	// Obtener la información del usuario y estado de autenticación desde el contexto
-	const { user, isAuthenticated } = useAuthContext();
+	const { user} = useAuthContext();
 	
 	// Estado para la imagen seleccionada
 	const [selectedFile, setSelectedFile] = useState(null);
@@ -46,14 +46,14 @@ const UserBox = () => {
 				},
 			});
 		
-  // Imprime la respuesta completa para verificar la estructura
-  console.log('Respuesta completa del servidor:', response.data);
+
 			if (response.data.success) {
 				// Actualizar la imagen en el frontend con la URL recibida
+				 const newProfileImage = response.data.data.user.profileImage;
+
+      // Actualizar la imagen en el frontend con la URL recibida
+      				setProfileImage(newProfileImage); // Aquí actualizamos el estado con la nueva imagen
                             
-				setProfileImage(response.data.data.user.profileImage); // Corregido: Asegurarse de acceder al campo correcto
-				console.log('Nueva imagen de perfil:', response.data.data.user.profileImage); // Para verificar qué se recibe
-		
 				// Actualizar el estado de la subida
 				setUploadStatus('Foto de perfil actualizada exitosamente.');
 			} else {
