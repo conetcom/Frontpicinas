@@ -55,6 +55,7 @@ const UserBox = () => {
 			
 				// Guardar el usuario actualizado en localStorage para mantenerlo persistente
 				localStorage.setItem('user', JSON.stringify(updatedUser));
+				saveSession({ ...(updatedUser ?? {}) });
 			
 				// Actualizar el estado local de la imagen si es necesario
 				setProfileImage(updatedUser.profileImage); 
