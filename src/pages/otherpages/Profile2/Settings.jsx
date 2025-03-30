@@ -42,7 +42,7 @@ const PersonalInfo = ({ personalData, handleInputChange }) => {
 				<Col>
 					<TextAreaInput
 						label="Bio"
-						name="bio"
+						name="userbio"
 						placeholder={user?.userbio}
 						value={personalData.bio}
 						rows={4}
@@ -69,6 +69,43 @@ const CompanyInfo = ({ companyData, handleInputChange }) => {
 						name="companyName"
 						placeholder="Enter company name"
 						value={companyData.companyName}
+						containerClass={'mb-3'}
+						onChange={handleInputChange}
+					/>
+					
+				</Col>
+				
+				<Col md={6}>
+					<TextInput
+						label="nit"
+						type="text"
+						name="adress"
+						placeholder="Enter website url"
+						value={companyData.nit}
+						containerClass={'mb-3'}
+						onChange={handleInputChange}
+					/>
+				</Col>
+				<Col md={6}>
+					<TextInput
+						label="adress"
+						type="text"
+						name="adress"
+						placeholder="Enter website url"
+						value={companyData.adress}
+						containerClass={'mb-3'}
+						onChange={handleInputChange}
+					/>
+				</Col>
+			</Row>
+			<Row>
+				<Col md={6}>
+					<TextInput
+						label="phone"
+						type="text"
+						name="phone"
+						placeholder="Enter company name"
+						value={companyData.phone}
 						containerClass={'mb-3'}
 						onChange={handleInputChange}
 					/>
@@ -128,17 +165,22 @@ const Social = ({ socialData, handleInputChange }) => {
 
 const Settings = () => {
 	const { user } = useAuthContext();
+	
 
 	// Estados separados para cada tabla
 	const [personalData, setPersonalData] = useState({
 		firstName: user?.name || '',
 		lastName: user?.lastname || '',
 		bio: user?.userbio || '',
-		email: user?.email || ''
+		email: user?.email || '',
+		userId: user?.id ||'59'
 	});
-
+	
 	const [companyData, setCompanyData] = useState({
 		companyName: '',
+		nit: '',
+		adress: '',
+		phone: '',
 		website: ''
 	});
 
@@ -155,12 +197,12 @@ const Settings = () => {
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 
-		if (['firstName', 'lastName', 'bio', 'email'].includes(name)) {
+		if (['firstName', 'lastName', 'userbio'].includes(name)) {
 			setPersonalData((prevData) => ({
 				...prevData,
 				[name]: value
 			}));
-		} else if (['companyName', 'website'].includes(name)) {
+		} else if (['companyName', 'nit', 'adress', 'phone', 'website'].includes(name)) {
 			setCompanyData((prevData) => ({
 				...prevData,
 				[name]: value
@@ -176,37 +218,39 @@ const Settings = () => {
 	// Función para manejar el envío de datos de cada sección
 	const handleFormSubmit = async (e) => {
 		e.preventDefault();
-
+	  
 		try {
-			// Enviar datos personales
-			await axios.post('https://piscina-api.onrender.com/api/usuarios/update', personalData);
-			console.log('Información personal actualizada');
-
-			// Enviar datos de la empresa
-			await axios.post('https://piscina-api.onrender.com/api/clientes/update', companyData);
-			console.log('Información de la empresa actualizada');
-
-			// Enviar datos sociales
-			await axios.post('https://piscina-api.onrender.com/api/user/social', socialData);
-			console.log('Información social actualizada');
+		  
+		
+		  // Enviar datos personales
+		  await axios.post(`https://piscina-api.onrender.com/api/usuarios/update/${user?.id}`, personalData);
+		  console.log('Información personal actualizada');
+	  
+		  // Enviar datos de la empresa
+		  await axios.post('https://piscina-api.onrender.com/api/clientes/update/:id', companyData);
+		  console.log('Información de la empresa actualizada');
+	  
+		  // Enviar datos sociales
+		  await axios.post('https://piscina-api.onrender.com/api/user/social', socialData);
+		  console.log('Información social actualizada');
 		} catch (error) {
-			console.error('Error actualizando información', error);
+		  console.error('Error actualizando información', error);
 		}
-	};
-
-	return (
+	  };
+	  
+	  return (
 		<RHForm onSubmit={handleFormSubmit}>
-			<PersonalInfo personalData={personalData} handleInputChange={handleInputChange} />
-			<CompanyInfo companyData={companyData} handleInputChange={handleInputChange} />
-			<Social socialData={socialData} handleInputChange={handleInputChange} />
+		  <PersonalInfo personalData={personalData} handleInputChange={handleInputChange} />
+		  <CompanyInfo companyData={companyData} handleInputChange={handleInputChange} />
+		  <Social socialData={socialData} handleInputChange={handleInputChange} />
+		 
 
-			<div className="text-end">
-				<button type="submit" className="btn btn-success mt-2">
-					<i className="mdi mdi-content-save"></i> Save
-				</button>
-			</div>
+		  <div className="text-end">
+		  <button type="submit" onClick={handleFormSubmit}>Submit</button>
+			  
+		  </div>
 		</RHForm>
-	);
-};
+	  );
+	}	  
 
 export default Settings;
