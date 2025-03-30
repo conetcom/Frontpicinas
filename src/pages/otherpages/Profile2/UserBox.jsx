@@ -53,7 +53,7 @@ const UserBox = () => {
 
       // Actualizar la imagen en el frontend con la URL recibida
       				setProfileImage(newProfileImage); // Aquí actualizamos el estado con la nueva imagen
-                            
+                      console.log(newProfileImage)  ;    
 				// Actualizar el estado de la subida
 				setUploadStatus('Foto de perfil actualizada exitosamente.');
 			} else {
