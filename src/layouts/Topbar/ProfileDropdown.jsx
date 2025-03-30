@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useToggle } from '@/hooks';
 
 
-const ProfileDropdown = ({ userTitle, username, menuItems, userImage }) => {
+const ProfileDropdown = ({ userTitle, username, menuItems, profileimage }) => {
 	const [isOpen, toggleDropdown] = useToggle();
 
 	return (
@@ -17,7 +17,7 @@ const ProfileDropdown = ({ userTitle, username, menuItems, userImage }) => {
 				className="nav-link dropdown-toggle arrow-none nav-user px-2"
 			>
 				<span className="account-user-avatar">
-					<img src={userImage} className="rounded-circle" width={32} alt="user" />
+					<img src={profileimage} className="rounded-circle" width={32} alt="user" />
 				</span>
 				<span className="d-lg-flex flex-column gap-1 d-none">
 					<h5 className="my-0">{username}</h5>
