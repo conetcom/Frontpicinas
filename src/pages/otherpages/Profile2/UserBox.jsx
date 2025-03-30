@@ -49,14 +49,19 @@ const UserBox = () => {
 
 			if (response.data.success) {
 				const updatedUser = response.data.data.user;
+			
 				// Actualizar la imagen de perfil y el usuario global en el contexto
-				updateUser(updatedUser); // Actualiza el estado global
-				setProfileImage(updatedUser.profileImage); // Actualiza el estado local de la imagen si es necesario
+				updateUser(updatedUser); // Actualiza el estado global del contexto
+			
+				// Guardar el usuario actualizado en localStorage para mantenerlo persistente
+				localStorage.setItem('user', JSON.stringify(updatedUser));
+			
+				// Actualizar el estado local de la imagen si es necesario
+				setProfileImage(updatedUser.profileImage); 
+			
 				// Actualizar el estado de la subida
 				setUploadStatus('Foto de perfil actualizada exitosamente.');
-			} else {
-				setUploadStatus('Hubo un problema al actualizar la foto de perfil.');
-			}
+			} 
 		} catch (error) {
 			console.error('Error al subir la imagen:', error);
 			setUploadStatus('Error al subir la imagen.');
