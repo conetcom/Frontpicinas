@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
+import { useAuthContext } from '@/common/context';
 import classNames from 'classnames';
 import { useToggle } from '@/hooks';
 
-const ProfileDropdown = ({ userTitle, username, menuItems, userImage, user}) => {
+const ProfileDropdown = ({ userTitle, username, menuItems, userImage}) => {
+	const { user} = useAuthContext();
 	// Estado para la imagen de perfil, inicializando con userImage o una predeterminada
-	const [profileImage, setProfileImage] = useState(userImage);
+	const [profileImage, setProfileImage] = useState(user?.profileImage || userImage);
+	
 	const [isOpen, toggleDropdown] = useToggle();
 
 	// Este useEffect detecta si la imagen del perfil en el contexto del usuario cambia
