@@ -46,11 +46,15 @@ const UserBox = () => {
 				},
 			});
 		
-
-			if (response.data.success) {const updatedUser = response.data.data.user;
-    // Actualizar la imagen de perfil y el usuario global en el contexto
-    updateUser(updatedUser); // Actualiza el estado global
-    setProfileImage(updatedUser.profileImage); // Actualiza el estado local de la imagen si es necesario
+  // Imprime la respuesta completa para verificar la estructura
+  console.log('Respuesta completa del servidor:', res.data);
+			
+  if (res.data.success) {
+				// Actualizar la imagen en el frontend con la URL recibida
+                            
+				setProfileImage(res.data.data.profileImage); // Corregido: Asegurarse de acceder al campo correcto
+				console.log('Nueva imagen de perfil:', res.data.data.user.profileImage); // Para verificar qué se recibe
+		
 				// Actualizar el estado de la subida
 				setUploadStatus('Foto de perfil actualizada exitosamente.');
 			} else {
