@@ -51,8 +51,8 @@ const UserBox = () => {
 			if (response.data.success) {
 				// Actualizar la imagen en el frontend con la URL recibida
                             
-				setProfileImage(response.data.data.profileImage); // Corregido: Asegurarse de acceder al campo correcto
-				console.log('Nueva imagen de perfil:', response.data.data.profileImage); // Para verificar qué se recibe
+				setProfileImage(response.data.data.user.profileImage); // Corregido: Asegurarse de acceder al campo correcto
+				console.log('Nueva imagen de perfil:', response.data.data.user.profileImage); // Para verificar qué se recibe
 		
 				// Actualizar el estado de la subida
 				setUploadStatus('Foto de perfil actualizada exitosamente.');
