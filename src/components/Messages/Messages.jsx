@@ -1,15 +1,24 @@
+import { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { CardTitle } from '..';
 import MessageList from './MessageList';
 import MessageItem from './MessageItem';
-import profileImg from '@/assets/images/users/avatar-2.jpg';
-import avatar1 from '@/assets/images/users/avatar-3.jpg';
-import avatar2 from '@/assets/images/users/avatar-4.jpg';
-import avatar3 from '@/assets/images/users/avatar-5.jpg';
-import avatar6 from '@/assets/images/users/avatar-6.jpg';
 
+// Componente de mensajes
 const Messages = () => {
+	// Estado para almacenar los mensajes
+	const [messages, setMessages] = useState([]);
+
+	// Hook para obtener los mensajes de la API al cargar el componente
+	useEffect(() => {
+		// Aquí llamamos a la API para obtener los mensajes
+		fetch('https://piscina-api.onrender.com/api/usuarios/messages') // Cambia esta URL por la correcta de tu API
+			.then((response) => response.json())
+			.then((data) => setMessages(data)) // Actualiza el estado con los datos obtenidos
+			.catch((error) => console.error('Error fetching messages:', error));
+	}, []); // El array vacío [] significa que se ejecuta solo al montar el componente
+
 	return (
 		<Card>
 			<Card.Body>
@@ -20,70 +29,20 @@ const Messages = () => {
 				/>
 
 				<MessageList>
-					<MessageItem>
-						<div className="inbox-item-img">
-							<img src={profileImg} className="rounded-circle" alt="" />
-						</div>
-						<p className="inbox-item-author">Tomaslau</p>
-						<p className="inbox-item-text">I've finished it! See you so...</p>
-						<p className="inbox-item-date">
-							<Link to="" className="btn btn-sm btn-link text-info font-13">
-								Reply
-							</Link>
-						</p>
-					</MessageItem>
-
-					<MessageItem>
-						<div className="inbox-item-img">
-							<img src={avatar1} className="rounded-circle" alt="" />
-						</div>
-						<p className="inbox-item-author">Stillnotdavid</p>
-						<p className="inbox-item-text">This theme is awesome!</p>
-						<p className="inbox-item-date">
-							<Link to="" className="btn btn-sm btn-link text-info font-13">
-								Reply
-							</Link>
-						</p>
-					</MessageItem>
-
-					<MessageItem>
-						<div className="inbox-item-img">
-							<img src={avatar2} className="rounded-circle" alt="" />
-						</div>
-						<p className="inbox-item-author">Kurafire</p>
-						<p className="inbox-item-text">Nice to meet you</p>
-						<p className="inbox-item-date">
-							<Link to="" className="btn btn-sm btn-link text-info font-13">
-								Reply
-							</Link>
-						</p>
-					</MessageItem>
-
-					<MessageItem>
-						<div className="inbox-item-img">
-							<img src={avatar3} className="rounded-circle" alt="" />
-						</div>
-						<p className="inbox-item-author">Shahedk</p>
-						<p className="inbox-item-text">Hey! there I'm available...</p>
-						<p className="inbox-item-date">
-							<Link to="" className="btn btn-sm btn-link text-info font-13">
-								Reply
-							</Link>
-						</p>
-					</MessageItem>
-
-					<MessageItem>
-						<div className="inbox-item-img">
-							<img src={avatar6} className="rounded-circle" alt="" />
-						</div>
-						<p className="inbox-item-author">Adhamdannaway</p>
-						<p className="inbox-item-text">This theme is awesome!</p>
-						<p className="inbox-item-date">
-							<Link to="" className="btn btn-sm btn-link text-info font-13">
-								Reply
-							</Link>
-						</p>
-					</MessageItem>
+					{messages.map((message) => (
+						<MessageItem key={message.id}>
+							<div className="inbox-item-img">
+								<img src={message.avatarUrl} className="rounded-circle" alt={message.author} />
+							</div>
+							<p className="inbox-item-author">{message.author}</p>
+							<p className="inbox-item-text">{message.text}</p>
+							<p className="inbox-item-date">
+								<Link to="" className="btn btn-sm btn-link text-info font-13">
+									Reply
+								</Link>
+							</p>
+						</MessageItem>
+					))}
 				</MessageList>
 			</Card.Body>
 		</Card>
@@ -91,3 +50,4 @@ const Messages = () => {
 };
 
 export default Messages;
+
