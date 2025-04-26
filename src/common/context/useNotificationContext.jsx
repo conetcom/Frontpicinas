@@ -1,4 +1,3 @@
-// src/common/context/NotificationContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
@@ -25,8 +24,6 @@ export const NotificationProvider = ({ children }) => {
 
   useEffect(() => {
     socket.on('newMessage', (message) => {
-      
-		
       addNotification({
         title: message.username || 'Nuevo mensaje',
         subText: message.messages,
@@ -39,7 +36,7 @@ export const NotificationProvider = ({ children }) => {
     });
 
     socket.on('newReply', (reply) => {
-		      addNotification({
+      addNotification({
         title: reply.username || 'Nueva respuesta',
         subText: reply.content,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -61,6 +58,7 @@ export const NotificationProvider = ({ children }) => {
   );
 };
 
+// ✅ Solo este hook es necesario
 export const useNotifications = () => {
   const context = useContext(NotificationContext);
   if (!context) {
@@ -68,10 +66,3 @@ export const useNotifications = () => {
   }
   return context;
 };
-export function useNotificationContext() {
-  const context = useContext(NotificationContext);
-  if (context === undefined) {
-    throw new Error('useNotificationContext must be used within an NotificationProvider');
-  }
-  return context;
-}
