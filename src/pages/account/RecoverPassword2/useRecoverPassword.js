@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { useState } from 'react';
-import { useNotificationContext } from '@/common/context';
+import { useNotifications } from '@/common/context';
 
 import { authApi } from '@/common';
 
 export default function useRecoverPassword() {
 	const [loading, setLoading] = useState(false);
-	const { showNotification } = useNotificationContext();
+	const { showNotification } = useNotifications();
 
 	const { t } = useTranslation();
 

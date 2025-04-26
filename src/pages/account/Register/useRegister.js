@@ -1,5 +1,5 @@
 import { authApi } from '@/common/api';
-import { useAuthContext, useNotificationContext } from '@/common/context';
+import { useAuthContext, useNotifications } from '@/common/context';
 
 import * as yup from 'yup';
 import { useState } from 'react';
@@ -13,7 +13,7 @@ export default function useRegister() {
 	const navigate = useNavigate();
 
 	const { isAuthenticated } = useAuthContext();
-	const { showNotification } = useNotificationContext();
+	const { showNotification } = useNotifications();
 
 	const schema = yup.object().shape({
 		username: yup.string().required(t('Please enter name')),
