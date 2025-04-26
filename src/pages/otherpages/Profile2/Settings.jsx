@@ -1,10 +1,11 @@
 import { Row, Col, InputGroup, Form } from 'react-bootstrap';
 import { Form as RHForm } from '@/components';
-import { Link } from 'react-router-dom';
 import { PasswordInput, TextAreaInput, TextInput } from '@/components';
 import { useAuthContext } from '@/common/context';
 import { useState } from 'react';
 import axios from 'axios';
+
+const apiUrl = import.meta.env.VITE_API_URL; // ✅ Usamos la variable de entorno
 
 const PersonalInfo = ({ personalData, handleInputChange }) => {
 	const { user } = useAuthContext();
@@ -72,15 +73,13 @@ const CompanyInfo = ({ companyData, handleInputChange }) => {
 						containerClass={'mb-3'}
 						onChange={handleInputChange}
 					/>
-					
 				</Col>
-				
 				<Col md={6}>
 					<TextInput
-						label="nit"
+						label="NIT"
 						type="text"
-						name="adress"
-						placeholder="Enter website url"
+						name="nit"
+						placeholder="Enter NIT"
 						value={companyData.nit}
 						containerClass={'mb-3'}
 						onChange={handleInputChange}
@@ -88,10 +87,10 @@ const CompanyInfo = ({ companyData, handleInputChange }) => {
 				</Col>
 				<Col md={6}>
 					<TextInput
-						label="adress"
+						label="Address"
 						type="text"
 						name="adress"
-						placeholder="Enter website url"
+						placeholder="Enter address"
 						value={companyData.adress}
 						containerClass={'mb-3'}
 						onChange={handleInputChange}
@@ -101,10 +100,10 @@ const CompanyInfo = ({ companyData, handleInputChange }) => {
 			<Row>
 				<Col md={6}>
 					<TextInput
-						label="phone"
+						label="Phone"
 						type="text"
 						name="phone"
-						placeholder="Enter company name"
+						placeholder="Enter phone"
 						value={companyData.phone}
 						containerClass={'mb-3'}
 						onChange={handleInputChange}
@@ -115,7 +114,7 @@ const CompanyInfo = ({ companyData, handleInputChange }) => {
 						label="Website"
 						type="text"
 						name="website"
-						placeholder="Enter website url"
+						placeholder="Enter website URL"
 						value={companyData.website}
 						containerClass={'mb-3'}
 						onChange={handleInputChange}
@@ -165,15 +164,13 @@ const Social = ({ socialData, handleInputChange }) => {
 
 const Settings = () => {
 	const { user } = useAuthContext();
-	
 
-	// Estados separados para cada tabla
 	const [personalData, setPersonalData] = useState({
 		firstName: user?.name || '',
 		lastName: user?.lastname || '',
 		bio: user?.userbio || '',
 		email: user?.email || '',
-		userId: user?.id ||'59'
+		userId: user?.id || ''
 	});
 	
 	const [companyData, setCompanyData] = useState({
@@ -193,64 +190,52 @@ const Settings = () => {
 		github: ''
 	});
 
-	// Función para manejar cambios en cada conjunto de datos
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 
 		if (['firstName', 'lastName', 'userbio'].includes(name)) {
-			setPersonalData((prevData) => ({
-				...prevData,
-				[name]: value
-			}));
+			setPersonalData((prev) => ({ ...prev, [name]: value }));
 		} else if (['companyName', 'nit', 'adress', 'phone', 'website'].includes(name)) {
-			setCompanyData((prevData) => ({
-				...prevData,
-				[name]: value
-			}));
+			setCompanyData((prev) => ({ ...prev, [name]: value }));
 		} else {
-			setSocialData((prevData) => ({
-				...prevData,
-				[name]: value
-			}));
+			setSocialData((prev) => ({ ...prev, [name]: value }));
 		}
 	};
 
-	// Función para manejar el envío de datos de cada sección
 	const handleFormSubmit = async (e) => {
 		e.preventDefault();
-	  
-		try {
-		  
-		
-		  // Enviar datos personales
-		  await axios.post(`https://piscina-api.onrender.com/api/usuarios/update/${user?.id}`, personalData);
-		  console.log('Información personal actualizada');
-	  
-		  // Enviar datos de la empresa
-		  await axios.post('https://piscina-api.onrender.com/api/clientes/update/:id', companyData);
-		  console.log('Información de la empresa actualizada');
-	  
-		  // Enviar datos sociales
-		  await axios.post('https://piscina-api.onrender.com/api/user/social', socialData);
-		  console.log('Información social actualizada');
-		} catch (error) {
-		  console.error('Error actualizando información', error);
-		}
-	  };
-	  
-	  return (
-		<RHForm onSubmit={handleFormSubmit}>
-		  <PersonalInfo personalData={personalData} handleInputChange={handleInputChange} />
-		  <CompanyInfo companyData={companyData} handleInputChange={handleInputChange} />
-		  <Social socialData={socialData} handleInputChange={handleInputChange} />
-		 
 
-		  <div className="text-end">
-		  <button type="submit" onClick={handleFormSubmit}>Submit</button>
-			  
-		  </div>
+		try {
+			// Personal Info Update
+			await axios.post(`${apiUrl}usuarios/update/${user?.id}`, personalData);
+			console.log('Información personal actualizada');
+
+			// Company Info Update
+			await axios.post(`${apiUrl}clientes/update/${user?.id}`, companyData);
+			console.log('Información de la empresa actualizada');
+
+			// Social Info Update
+			await axios.post(`${apiUrl}user/social`, { userId: user?.id, ...socialData });
+			console.log('Información social actualizada');
+			
+		} catch (error) {
+			console.error('Error actualizando información', error);
+		}
+	};
+
+	return (
+		<RHForm onSubmit={handleFormSubmit}>
+			<PersonalInfo personalData={personalData} handleInputChange={handleInputChange} />
+			<CompanyInfo companyData={companyData} handleInputChange={handleInputChange} />
+			<Social socialData={socialData} handleInputChange={handleInputChange} />
+
+			<div className="text-end">
+				<button type="submit" className="btn btn-primary">
+					Guardar Cambios
+				</button>
+			</div>
 		</RHForm>
-	  );
-	}	  
+	);
+};
 
 export default Settings;
