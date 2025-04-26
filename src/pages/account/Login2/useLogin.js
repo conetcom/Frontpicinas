@@ -1,5 +1,5 @@
 import { authApi } from '@/common/api';
-import { useAuthContext, useNotificationContext } from '@/common/context';
+import { useAuthContext, useNotifications } from '@/common/context';
 import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -15,7 +15,7 @@ export default function useLogin() {
 	const navigate = useNavigate();
 
 	const { isAuthenticated, saveSession } = useAuthContext();
-	const { showNotification } = useNotificationContext();
+	const { showNotification } = useNotifications();
 
 	const redirectUrl = useMemo(
 		() => (location.state && location.state.from ? location.state.from.pathname : '/'),
