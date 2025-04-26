@@ -8,7 +8,7 @@ import MessageItem from './MessageItem';
 import HttpClient from '@/common/helpers/httpClient';
 import io from 'socket.io-client';
 
-const socket = io(import.meta.env.VITE_SOCKET_URL);
+const socket = io(import.meta.env.VITE_API_URL);
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
