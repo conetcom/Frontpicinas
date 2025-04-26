@@ -1,8 +1,8 @@
-import { useNotifications } from '@/common/context/useNotificationContext';
+import { useNotificationsContext } from '@/common/context/useNotificationContext';
 import NotificationDropdown from './NotificationDropdown';
 
 const Header = () => {
-	const { notifications } = useNotifications();
+	const { notifications } = useNotificationsContext();
  
 
 	// Aplana los mensajes agrupados por día
