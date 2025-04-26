@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import profileImg from '@/assets/images/users/avatar-1.jpg';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_SOCKET_URL;
 
 const UserBox = () => {
 	const { user } = useAuthContext();
