@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { notifications, profileMenus, searchOptions } from './data';
+import {notifications,profileMenus, searchOptions } from './data';
 import LanguageDropdown from './LanguageDropdown';
 import NotificationDropdown from './NotificationDropdown';
 import ProfileDropdown from './ProfileDropdown';
@@ -8,29 +8,31 @@ import TopbarSearch from './TopbarSearch';
 import AppsDropdown from './AppsDropdown';
 import MaximizeScreen from './MaximizeScreen';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { useAuthContext } from '@/common/context';
 
 // assets
-import React, { useState } from 'react';
-import { useAuthContext } from '@/common/context';
-import profileImg from '@/assets/images/users/avatar-3.jpg';
-import logo from '@/assets/images/Admin Piscinas.png';
-import logoDark from '@/assets/images/Admin Piscinas.png';
-import logoSm from '@/assets/images/Admin Piscinas.png';
-import logoDarkSm from '@/assets/images/Admin Piscinas.png';
+import userimage from '@/assets/images/users/avatar-1.jpg';
+import logo from '@/assets/images/logo.png';
+import logoDark from '@/assets/images/logo-dark.png';
+import logoSm from '@/assets/images/logo-sm.png';
+import logoDarkSm from '@/assets/images/logo-dark-sm.png';
 import { ThemeSettings, useThemeContext } from '@/common';
 import useThemeCustomizer from '@/components/ThemeCustomizer/useThemeCustomizer';
 import { useViewport } from '@/hooks';
 
 const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
-	const { user } = useAuthContext();
-	
 	const { settings, updateSettings, updateSidebar } = useThemeContext();
-
+const userImag = userimage;
 	const { sideBarType } = useThemeCustomizer();
 
 	const { width } = useViewport();
-	const [userImage] = useState(user?.profileImage || profileImg);
-
+	const { user } = useAuthContext();
+	
+	const user_rol = user?.user?.rol;
+      const user_name = user?.user?.name;
+      const user_avatar = user?.user?.profileImage||{userimage};
+	  console.log(user_name);
+	  
 	/**
 	 * Toggle the leftmenu when having mobile screen
 	 */
@@ -167,10 +169,10 @@ const Topbar = ({ topbarDark, toggleMenu, navOpen }) => {
 
 					<li className="dropdown">
 						<ProfileDropdown
-							userImage={userImage}
-							menuItems={profileMenus}
-							username={user?.name}
-							userTitle={user?.rol}
+							 userImage= {user_avatar}
+							 menuItems={profileMenus}
+							 username={user_name}
+							 userTitle={user_rol}
 						/>
 					</li>
 				</ul>

@@ -15,14 +15,13 @@ const authSessionKey = '_HYPER_AUTH';
 export function AuthProvider({ children }) {
 	const [user, setUser] = useState(
 		localStorage.getItem(authSessionKey)
-		  ? JSON.parse(localStorage.getItem(authSessionKey) || '{}')
-		  : {}
-	  );
-	  
+			? JSON.parse(localStorage.getItem(authSessionKey) || '{}')
+			: undefined
+	);
 
 	const saveSession = useCallback(
 		(user) => {
-			localStorage.setItem(authSessionKey, JSON.stringify(user));
+			localStorage.setItem(authSessionKey, JSON.stringify(user.token));
 			setUser(user);
 		},
 		[setUser]

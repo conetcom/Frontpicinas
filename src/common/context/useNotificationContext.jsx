@@ -1,65 +1,70 @@
-import Toast from 'react-bootstrap/Toast';
-import ToastContainer from 'react-bootstrap/ToastContainer';
-import { createContext, useContext, useState } from 'react';
+// src/common/context/NotificationContext.jsx
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
 
-const NotificationContext = createContext({});
+const NotificationContext = createContext();
 
-function Toastr({ show, title, message, onClose, variant = 'light', delay = 5000 }) {
-	return (
-		<ToastContainer className="p-3" position="top-end">
-			<Toast bg={variant.toLowerCase()} delay={delay} show={show} onClose={onClose} autohide>
-				{title && (
-					<Toast.Header className={`text-${variant}`}>
-						<strong className="me-auto">{title}</strong>
-					</Toast.Header>
-				)}
-				<Toast.Body className={['dark', 'danger'].includes(variant) ? 'text-white' : ''}>
-					{message}
-				</Toast.Body>
-			</Toast>
-		</ToastContainer>
-	);
-}
+export const NotificationProvider = ({ children }) => {
+  const [notifications, setNotifications] = useState([]);
+  const socket = io(import.meta.env.VITE_SOCKET_URL);
 
-export function useNotificationContext() {
-	const context = useContext(NotificationContext);
-	if (context === undefined) {
-		throw new Error('useNotificationContext must be used within an NotificationProvider');
-	}
-	return context;
-}
+  const addNotification = (newNotiMessage) => {
+    setNotifications((prev) => {
+      const today = prev.find((item) => item.day === 'Hoy');
+      if (today) {
+        return prev.map((item) =>
+          item.day === 'Hoy'
+            ? { ...item, messages: [newNotiMessage, ...item.messages] }
+            : item
+        );
+      } else {
+        return [{ day: 'Hoy', messages: [newNotiMessage] }, ...prev];
+      }
+    });
+  };
 
-const notificationTypes = {
-	error: 'danger',
-	info: 'info',
-	success: 'success',
-	default: 'light',
+  useEffect(() => {
+    socket.on('newMessage', (message) => {
+      
+		
+      addNotification({
+        title: message.username || 'Nuevo mensaje',
+        subText: message.messages,
+        avatar: message.avatar,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        variant: 'primary',
+        icon: 'ri-message-2-line',
+        isRead: false,
+      });
+    });
+
+    socket.on('newReply', (reply) => {
+		      addNotification({
+        title: reply.username || 'Nueva respuesta',
+        subText: reply.content,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        variant: 'info',
+        icon: 'ri-reply-line',
+        isRead: false,
+      });
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  return (
+    <NotificationContext.Provider value={{ notifications }}>
+      {children}
+    </NotificationContext.Provider>
+  );
 };
 
-export function NotificationProvider({ children }) {
-	const [config, setConfig] = useState({
-		show: false,
-		message: '',
-		title: '',
-	});
-
-	const hideNotification = () => {
-		setConfig({ show: false, message: '', title: '' });
-	};
-	const showNotification = ({ title, message, type }) => {
-		setConfig({
-			show: true,
-			title,
-			message,
-			variant: notificationTypes[type] ?? 'light',
-			onClose: hideNotification,
-		});
-	};
-
-	return (
-		<NotificationContext.Provider value={{ showNotification }}>
-			<Toastr {...config} />
-			{children}
-		</NotificationContext.Provider>
-	);
-}
+export const useNotifications = () => {
+  const context = useContext(NotificationContext);
+  if (!context) {
+    throw new Error('useNotifications must be used within a NotificationProvider');
+  }
+  return context;
+};

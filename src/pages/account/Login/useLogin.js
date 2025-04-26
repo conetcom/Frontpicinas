@@ -1,5 +1,5 @@
 import { authApi } from '@/common/api';
-import { useAuthContext, useNotificationContext } from '@/common/context';
+import { useAuthContext, useNotifications } from '@/common/context';
 import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -15,7 +15,7 @@ export default function useLogin() {
 	const navigate = useNavigate();
 
 	const { isAuthenticated, saveSession } = useAuthContext();
-	const { showNotification } = useNotificationContext();
+	const { showNotification } = useNotifications();
 
 	const redirectUrl = useMemo(
 		() => (location.state && location.state.from ? location.state.from.pathname : '/'),
@@ -27,9 +27,11 @@ export default function useLogin() {
 		try {
 			const res = await authApi.login(values);
 			if (res.data.token) {
+				
 				localStorage.setItem('token', res.data.token);
 				localStorage.setItem('user', JSON.stringify(res.data.user));
-				saveSession({ ...(res.data ?? {}), token: res.data.token });
+				console.log('usuario registrado', res.data.user)
+				saveSession({ user: res.data.user, token: res.data.token });
 				navigate(redirectUrl);
 			}
 		} catch (error) {

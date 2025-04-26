@@ -1,3 +1,11 @@
-export * from './useThemeContext';
+/*
 export * from './useAuthContext';
-export * from './useNotificationContext';
+export { useTheme, ThemeProvider } from './useThemeContext';
+export * from './useNotificationContext'; */
+// src/common/context/index.js
+
+export { useAuthContext, AuthProvider } from './useAuthContext';
+
+export * from './useThemeContext';
+// Agrega más si tienes otros contextos
+export { NotificationProvider, useNotifications } from './useNotificationContext';
