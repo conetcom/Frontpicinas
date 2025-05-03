@@ -5,8 +5,12 @@ import { Link } from 'react-router-dom';
 import { CardTitle } from '..';
 import MessageList from './MessageList';
 import MessageItem from './MessageItem';
-import HttpClient from '@/common/helpers/httpClient';
 import io from 'socket.io-client';
+import {
+  fetchMessages as fetchMessagesService,
+  sendReply as sendReplyService,
+  sendNewMessage as sendNewMessageService,
+} from './messageService';
 
 const socket = io(import.meta.env.VITE_SOCKET_URL);
 
@@ -23,10 +27,7 @@ const Messages = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No authentication token found');
 
-      const config = {
-        headers: { Authorization: `Bearer ${token}` }
-      };
-      const data = await HttpClient.get('messages', config);
+      const data = await fetchMessagesService(token);
       setMessages(data);
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -50,7 +51,7 @@ const Messages = () => {
     };
   }, []);
 
-  const sendNewMessage = async (e) => {
+  const handleSendNewMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
@@ -60,41 +61,32 @@ const Messages = () => {
       const name = user?.user?.name || 'User';
       const avatar = profileImage;
 
-      const config = {
-        headers: { Authorization: `Bearer ${token}` }
-      };
+      await sendNewMessageService({ token, newMessage, name, user_id, avatar });
 
-      const messageData = { text: newMessage, sender: name, user_id, avatar };
-
-      await HttpClient.post('savemessages', messageData, config);
       setNewMessage('');
 
       socket.emit('sendMessage', {
         to: 'all',
         from: user_id,
         content: newMessage,
-        avatar,
+        avatar,  
       });
+      
     } catch (error) {
       console.error('Error sending message:', error);
       alert('Error sending message');
     }
   };
 
-  const sendReply = async (messageId) => {
-    if (!replyText) return;
+  const handleSendReply = async (messageId) => {
+    if (!replyText.trim()) return;
 
     try {
       const token = localStorage.getItem('token');
       const user_id = user?.user?.id;
+      
 
-      const config = {
-        headers: { Authorization: `Bearer ${token}` }
-      };
-
-      const body = { reply: replyText, user_id };
-
-      await HttpClient.post(`messages/${messageId}/reply`, body, config);
+      await sendReplyService({ token, messageId, replyText, user_id });
 
       setReplyText('');
       setActiveMessageId(null);
@@ -103,8 +95,9 @@ const Messages = () => {
       socket.emit('sendMessage', {
         to: 'all',
         from: user_id,
-        content: replyText,
+        content: replyText,  
       });
+      
     } catch (error) {
       console.error('Error sending reply:', error);
       alert('Error sending reply');
@@ -120,7 +113,7 @@ const Messages = () => {
           menuItems={[{ label: 'Settings' }, { label: 'Action' }]}
         />
 
-        <form onSubmit={sendNewMessage} className="mb-3">
+        <form onSubmit={handleSendNewMessage} className="mb-3">
           <input
             type="text"
             value={newMessage}
@@ -154,7 +147,7 @@ const Messages = () => {
                     className="form-control mb-2"
                     placeholder="Escribe tu respuesta"
                   ></textarea>
-                  <button className="btn btn-sm btn-primary" onClick={() => sendReply(message.id)}>
+                  <button className="btn btn-sm btn-primary" onClick={() => handleSendReply(message.id)}>
                     Enviar respuesta
                   </button>
                 </div>

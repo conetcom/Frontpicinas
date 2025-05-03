@@ -31,8 +31,7 @@ const userImag = userimage;
 	const user_rol = user?.user?.rol;
       const user_name = user?.user?.name;
       const user_avatar = user?.user?.profileImage||{userimage};
-	  console.log(user_name);
-	  
+		  
 	/**
 	 * Toggle the leftmenu when having mobile screen
 	 */

@@ -5,8 +5,8 @@ import axios from 'axios';
 import { useState } from 'react';
 import profileImg from '@/assets/images/users/avatar-1.jpg';
 
-const apiUrl = import.meta.env.VITE_SOCKET_URL;
-
+const appurl = import.meta.env.VITE_API_URL;
+console.log(appurl);
 const UserBox = () => {
 	const { user } = useAuthContext();
 	const [selectedFile, setSelectedFile] = useState(null);
@@ -16,6 +16,7 @@ const UserBox = () => {
 	const handleFileChange = (event) => {
 		setSelectedFile(event.target.files[0]);
 	};
+
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -27,7 +28,7 @@ const UserBox = () => {
 
 		try {
 			const token = localStorage.getItem('token');
-			const response = await axios.post(`${apiUrl}upload`, formData, {
+			const response = await axios.post(`${appurl}upload`, formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 					Authorization: `Bearer ${token}`,
@@ -45,6 +46,7 @@ const UserBox = () => {
 			setUploadStatus('Error al subir la imagen.');
 		}
 	};
+
 
 	return (
 		<Card className="text-center">
