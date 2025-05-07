@@ -47,8 +47,10 @@ export default function useRegister() {
 				navigate('/account/confirm-mail');
 			}
 		} catch (e) {
-			showNotification({ message: e.toString(), type: 'error' });
-		} finally {
+			const errorMsg = e.response?.data?.message || e.message || 'Error desconocido';
+			showNotification({ message: errorMsg, type: 'error' });
+		}
+		 finally {
 			setLoading(false);
 		}
 	};

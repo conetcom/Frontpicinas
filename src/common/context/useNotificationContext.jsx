@@ -27,7 +27,7 @@ export const NotificationProvider = ({ children }) => {
       addNotification({
         title: message.username || 'Nuevo mensaje',
         subText: message.messages,
-        avatar: message.avatar,
+        avatar: message.avatar_url,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         variant: 'primary',
         icon: 'ri-message-2-line',
@@ -38,7 +38,8 @@ export const NotificationProvider = ({ children }) => {
     socket.on('newReply', (reply) => {
       addNotification({
         title: reply.username || 'Nueva respuesta',
-        subText: reply.content,
+        subText: reply.reply,
+        avatar: reply.avatar_url,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         variant: 'info',
         icon: 'ri-reply-line',

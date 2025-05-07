@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { BGCircles } from '@/components';
 
 // images
-import Logo from '@/assets/images/logo.png';
+import Logo from '@/assets/images/AdminPiscinas.png';
 
 export default function AccountWrapper({ bottomLinks, children }) {
 	return (
@@ -30,9 +30,9 @@ export default function AccountWrapper({ bottomLinks, children }) {
 				</Container>
 			</div>
 			<footer className="footer footer-alt">
-				2018 - {new Date().getFullYear()} © Hyper -
-				<Link to="https://coderthemes.com/" target="_blank">
-					Coderthemes.com
+				2024 - {new Date().getFullYear()} © Piscinas -
+				<Link to="https://conetweb.com/" target="_blank">
+					Conetcom.com
 				</Link>
 			</footer>
 		</>

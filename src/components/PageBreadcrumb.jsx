@@ -6,7 +6,7 @@ const PageBreadcrumb = ({ subName, title, children }) => {
 	return (
 		<>
 			<Helmet>
-				<title>{title} | Hyper - Responsive Bootstrap 5 Admin Dashboard</title>
+				<title>{title} | Piscinas - Responsive Bootstrap 5 Admin Dashboard</title>
 			</Helmet>
 			{subName && (
 				<Row>

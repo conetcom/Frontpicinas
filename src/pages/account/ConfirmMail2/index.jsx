@@ -9,7 +9,7 @@ const BottomLink = () => {
 	return (
 		<footer className="footer footer-alt">
 			<p className="text-muted">
-				2018 - {new Date().getFullYear()} © Hyper - Coderthemes.com
+				2018 - {new Date().getFullYear()} © Piscinas - Conetcom Ltda
 			</p>
 		</footer>
 	);

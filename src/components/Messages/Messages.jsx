@@ -6,11 +6,6 @@ import { CardTitle } from '..';
 import MessageList from './MessageList';
 import MessageItem from './MessageItem';
 import io from 'socket.io-client';
-import {
-  fetchMessages as fetchMessagesService,
-  sendReply as sendReplyService,
-  sendNewMessage as sendNewMessageService,
-} from './messageService';
 
 const socket = io(import.meta.env.VITE_SOCKET_URL);
 
@@ -22,87 +17,61 @@ const Messages = () => {
   const { user } = useAuthContext();
   const [profileImage] = useState(user?.user?.profileImage);
 
-  const fetchMessages = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('No authentication token found');
-
-      const data = await fetchMessagesService(token);
-      setMessages(data);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  };
-
   useEffect(() => {
-    fetchMessages();
+    // Solicitar todos los mensajes al montar
+    socket.emit('getAllMessages');
 
-    socket.on('newMessage', (message) => {
-      setMessages((prev) => [message, ...prev]);
-    });
-
-    socket.on('newReply', () => {
-      fetchMessages();
+    // Escuchar mensajes del servidor
+    socket.on('allMessages', (data) => setMessages(data));
+    socket.on('newMessage', (message) => setMessages(prev => [message, ...prev]));
+    socket.on('newReply', (updatedMessage) => {
+      setMessages(prev => prev.map(msg => msg.id === updatedMessage.id ? updatedMessage : msg));
     });
 
     return () => {
+      socket.off('allMessages');
       socket.off('newMessage');
       socket.off('newReply');
     };
   }, []);
 
-  const handleSendNewMessage = async (e) => {
+  const handleSendNewMessage = (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
-
-    try {
-      const token = localStorage.getItem('token');
-      const user_id = user?.user?.id;
-      const name = user?.user?.name || 'User';
-      const avatar = profileImage;
-
-      await sendNewMessageService({ token, newMessage, name, user_id, avatar });
-
-      setNewMessage('');
-
-      socket.emit('sendMessage', {
-        to: 'all',
-        from: user_id,
-        content: newMessage,
-        avatar,  
-      });
-      
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Error sending message');
-    }
+  
+    const user_id = user?.user?.id;
+    const username = user?.user?.name || user?.user?.username;
+    const avatar = user?.user?.profileImage || '';
+  
+    socket.emit('sendMessage', {
+      user_id,
+      content: newMessage,
+      name: username,
+      avatar,
+    });
+  
+    setNewMessage('');
   };
-
-  const handleSendReply = async (messageId) => {
+  
+  const handleSendReply = (messageId) => {
     if (!replyText.trim()) return;
-
-    try {
-      const token = localStorage.getItem('token');
-      const user_id = user?.user?.id;
-      
-
-      await sendReplyService({ token, messageId, replyText, user_id });
-
-      setReplyText('');
-      setActiveMessageId(null);
-      fetchMessages();
-
-      socket.emit('sendMessage', {
-        to: 'all',
-        from: user_id,
-        content: replyText,  
-      });
-      
-    } catch (error) {
-      console.error('Error sending reply:', error);
-      alert('Error sending reply');
-    }
+  
+    const user_id = user?.user?.id;
+    const username = user?.user?.name || user?.user?.username;
+    const avatar = user?.user?.profileImage || '';
+  
+    socket.emit('sendReply', {
+      messageId,
+      reply: replyText,
+      userId: user_id,
+      name: username,
+      avatar,
+    });
+  
+    setReplyText('');
+    setActiveMessageId(null);
   };
+  
 
   return (
     <Card>
@@ -130,7 +99,7 @@ const Messages = () => {
               <div className="inbox-item-img">
                 <img src={message.avatar_url} className="rounded-circle" alt="avatar" />
               </div>
-              <p className="inbox-item-author">{message.usuarios}</p>
+              <p className="inbox-item-author">{message.username}</p>
               <p className="inbox-item-text">{message.messages}</p>
 
               <p className="inbox-item-date">
@@ -153,16 +122,27 @@ const Messages = () => {
                 </div>
               )}
 
-              {message.replies && message.replies.length > 0 && (
-                <div className="ml-4 mt-2">
-                  <strong>Respuestas:</strong>
-                  {message.replies.map((reply) => (
-                    <div key={reply.id} className="border p-2 mt-1 rounded">
-                      <p>{reply.reply}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
+{message.replies && message.replies.length > 0 && (
+  <div className="ml-4 mt-2">
+    <strong>Respuestas:</strong>
+    {message.replies.map((reply) => (
+      <div key={reply.id} className="d-flex align-items-start gap-2 border p-2 mt-2 rounded">
+        <img
+          src={reply.avatar_url || 'https://via.placeholder.com/32'}
+          alt="avatar"
+          className="rounded-circle"
+          width={32}
+          height={32}
+        />
+        <div>
+          <strong>{reply.username || 'Usuario'}</strong>
+          <p className="mb-0">{reply.reply}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
             </MessageItem>
           ))}
         </MessageList>

@@ -39,7 +39,7 @@ const Login2 = () => {
 				<Form
 					onSubmit={login}
 					schema={loginFormSchema}
-					defaultValues={{ email: 'hyper@coderthemes.com', password: 'Hyper' }}
+					defaultValues={{ email: 'info@conetweb.com', password: 'info2025' }}
 				>
 					<TextInput
 						label={t('Email Address')}
