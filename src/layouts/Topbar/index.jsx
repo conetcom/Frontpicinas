@@ -15,7 +15,7 @@ import userimage from '@/assets/images/users/avatar-1.jpg';
 import logo from '@/assets/images/logo.png';
 import logoDark from '@/assets/images/logo-dark.png';
 import logoSm from '@/assets/images/logo-sm.png';
-import logoDarkSm from '@/assets/images/AdminPiscinas.png';
+import logoDarkSm from '@/assets/images/logo-dark-sm.png';
 import { ThemeSettings, useThemeContext } from '@/common';
 import useThemeCustomizer from '@/components/ThemeCustomizer/useThemeCustomizer';
 import { useViewport } from '@/hooks';

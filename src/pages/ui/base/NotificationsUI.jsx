@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Row, Col, Card, Toast, ToastContainer, Form, Button } from 'react-bootstrap';
 import { useToggle } from '@/hooks';
 import { PageBreadcrumb } from '@/components';
-import logo from '@/assets/images/AdminPiscinas.png';
+import logo from '@/assets/images/logo-dark-sm.png';
 
 const DefaultToasts = () => {
 	const [isOpen, hide] = useToggle(true);

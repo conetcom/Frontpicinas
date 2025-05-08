@@ -128,7 +128,7 @@ const Messages = () => {
     {message.replies.map((reply) => (
       <div key={reply.id} className="d-flex align-items-start gap-2 border p-2 mt-2 rounded">
         <img
-          src={reply.avatar_url || 'https://via.placeholder.com/32'}
+          src={reply.avatar_url}
           alt="avatar"
           className="rounded-circle"
           width={32}
