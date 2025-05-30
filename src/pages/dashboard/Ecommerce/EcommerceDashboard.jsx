@@ -10,7 +10,7 @@ import SalesChart from './SalesChart';
 import Activity from './Activity';
 import Products from './Products';
 import Messages from '@/components/Messages/Messages'
-//import MessageDetail from '@/components/Messages/MessageDetail';
+import MessageDetail from '@/components/Messages/messageDetail';
 
 
 const EcommerceDashboard = () => {
