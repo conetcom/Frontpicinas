@@ -1,9 +1,16 @@
-import { CheckInput, Form, PasswordInput, TextInput, PageBreadcrumb } from '@/components';
+import {
+	CheckInput,
+	Form,
+	PasswordInput,
+	TextInput,
+	PageBreadcrumb,
+} from '@/components';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate } from 'react-router-dom';
 import AccountWrapper from '../AccountWrapper';
 import useRegister from './useRegister';
+import { useFormContext } from 'react-hook-form';
 
 const BottomLink = () => {
 	const { t } = useTranslation();
@@ -22,10 +29,34 @@ const BottomLink = () => {
 	);
 };
 
+const RoleSelect = () => {
+	const { t } = useTranslation();
+	const { register, formState } = useFormContext();
+	const error = formState.errors?.rol;
+
+	return (
+		<div className="mb-3">
+			<label htmlFor="rol" className="form-label">
+				{t('Role')}
+			</label>
+			<select
+				name="rol"
+				id="rol"
+				className={`form-control ${error ? 'is-invalid' : ''}`}
+				{...register('rol')}
+			>
+				<option value="">{t('Select a role')}</option>
+				<option value="user">{t('User')}</option>
+				<option value="admin">{t('Admin')}</option>
+			</select>
+			{error && <div className="invalid-feedback">{error.message}</div>}
+		</div>
+	);
+};
+
 export default function Register() {
 	const { t } = useTranslation();
-
-	const { loading, register, isAuthenticated, schema } = useRegister();
+	const { loading, register: onSubmit, isAuthenticated, schema } = useRegister();
 
 	return (
 		<>
@@ -35,14 +66,12 @@ export default function Register() {
 				<div className="text-center w-75 m-auto">
 					<h4 className="text-dark-50 text-center mt-0 fw-bold">{t('Free Sign Up')}</h4>
 					<p className="text-muted mb-4">
-						{t(
-							"Don't have an account? Create your account, it takes less than a minute"
-						)}
+						{t("Don't have an account? Create your account, it takes less than a minute")}
 					</p>
 				</div>
 
 				<Form
-					onSubmit={register}
+					onSubmit={onSubmit}
 					schema={schema}
 					defaultValues={{
 						email: 'info@conetweb.com',
@@ -50,6 +79,7 @@ export default function Register() {
 						lastname: 'conetcom',
 						password1: 'info2025',
 						password2: 'info2025',
+						rol: '',
 					}}
 				>
 					<TextInput
@@ -63,7 +93,7 @@ export default function Register() {
 						label={t('Last name')}
 						type="text"
 						name="lastname"
-						placeholder={t('Enter your name')}
+						placeholder={t('Enter your last name')}
 						containerClass="mb-3"
 					/>
 					<TextInput
@@ -79,36 +109,30 @@ export default function Register() {
 						placeholder={t('Enter password')}
 						containerClass="mb-3"
 					/>
-
 					<PasswordInput
 						label={t('Confirm Password')}
 						name="password2"
 						placeholder={t('Confirm password')}
 						containerClass="mb-3"
 					/>
-				<TextInput
-						label={t('rol')}
-						type="text"
-						name="rol"
-						placeholder={t('usuario o administrador')}
-						
-						containerClass="mb-3"
-					/>
-				
+
+					{/* Selector de rol */}
+					<RoleSelect />
+
 					<CheckInput
 						name="checkbox"
 						type="checkbox"
 						containerClass="mb-2"
 						label={
 							<>
-							  I accept
-							  <span className="text-muted cursor-pointer">
-								<Link to="/terms" target="_blank">
-								  Terms and Conditions
-								</Link>
-							  </span>
+								{t('I accept')}{' '}
+								<span className="text-muted cursor-pointer">
+									<Link to="/terms" target="_blank">
+										{t('Terms and Conditions')}
+									</Link>
+								</span>
 							</>
-						  }
+						}
 						defaultChecked
 					/>
 

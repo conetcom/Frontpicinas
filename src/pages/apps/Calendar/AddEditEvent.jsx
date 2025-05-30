@@ -1,6 +1,8 @@
 import { Modal, Row, Col, Button } from 'react-bootstrap';
 import { Form, SelectInput, TextInput } from '@/components';
 import { useAddEditEvent } from './hooks';
+const now = new Date();
+const minDateTime = now.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:mm"
 
 const AddEditEvent = ({
 	isOpen,
@@ -27,35 +29,60 @@ const AddEditEvent = ({
 			<Modal.Body className="px-4 pb-4 pt-0">
 				<Form onSubmit={onSubmitEvent} schema={schema} defaultValues={event}>
 					<Row>
-						<Col sm={12}>
-							<TextInput
-								containerClass="mb-3"
-								type="text"
-								label="Event Name"
-								name="title"
-								placeholder="Insert Event Name"
-								key="title"
-							/>
-						</Col>
-						<Col sm={12}>
-							<SelectInput label="Category" name="className" containerClass="mb-3">
-								<option value="bg-danger" defaultChecked>
-									Danger
-								</option>
-								<option value="bg-success">Success</option>
-								<option value="bg-primary">Primary</option>
-								<option value="bg-info">Info</option>
-								<option value="bg-dark">Dark</option>
-								<option value="bg-warning">Warning</option>
-							</SelectInput>
-						</Col>
-					</Row>
+  <Col sm={12}>
+    <TextInput
+      containerClass="mb-3"
+      type="text"
+      label="Event Name"
+      name="title"
+      placeholder="Insert Event Name"
+      key="title"
+    />
+  </Col>
+
+  <Col sm={12}>
+    <SelectInput label="Category" name="className" containerClass="mb-3">
+      <option value="bg-danger" defaultChecked>Danger</option>
+      <option value="bg-success">Success</option>
+      <option value="bg-primary">Primary</option>
+      <option value="bg-info">Info</option>
+      <option value="bg-dark">Dark</option>
+      <option value="bg-warning">Warning</option>
+    </SelectInput>
+  </Col>
+
+  <Col sm={6}>
+    <TextInput
+      containerClass="mb-3"
+      type="datetime-local"
+      label="Start Date & Time"
+      name="start"
+      placeholder="Select start date and time"
+      key="start"
+	   min={minDateTime}
+    />
+  </Col>
+
+  <Col sm={6}>
+    <TextInput
+      containerClass="mb-3"
+      type="datetime-local"
+      label="End Date & Time"
+      name="fin"
+      placeholder="Select end date and time"
+      key="end"
+	   min={minDateTime}
+    />
+  </Col>
+</Row>
+
+
 
 					<Row>
 						<Col xs={4}>
 							{isEditable ? (
-								<Button variant="danger" onClick={onRemoveEvent}>
-									Delete
+								<Button variant="danger" onClick={() => onRemoveEvent(eventData?.id)}>
+  								Delete
 								</Button>
 							) : null}
 						</Col>

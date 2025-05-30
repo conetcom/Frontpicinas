@@ -1,17 +1,19 @@
-import { useNotifications } from '@/common/context/useNotificationContext';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, Dropdown } from 'react-bootstrap';
 import SimpleBar from 'simplebar-react';
 import classNames from 'classnames';
 import { useToggle } from '@/hooks';
+import { useNotifications } from '@/common/context/useNotificationContext';
 
-const notificationShowContainerStyle = {
-  maxHeight: '300px',
-};
 const NotificationDropdown = () => {
-  const { notifications } = useNotifications();
+  const { notifications, markAsRead } = useNotifications(); // ✅ se importa markAsRead
   const [isOpen, toggleDropdown] = useToggle();
+//  const navigate = useNavigate();
+
+  const notificationShowContainerStyle = {
+    maxHeight: '300px',
+  };
 
   const hasUnread = notifications.some((group) =>
     group.messages?.some((msg) => !msg.isRead)
@@ -33,7 +35,6 @@ const NotificationDropdown = () => {
         ></i>
         <span className="noti-icon-badge"></span>
       </Dropdown.Toggle>
-      {/* resto igual... */}
 
       <Dropdown.Menu className="dropdown-menu-animated dropdown-lg" align="end">
         <div onClick={toggleDropdown}>
@@ -50,15 +51,19 @@ const NotificationDropdown = () => {
 
           <SimpleBar className="px-3" style={notificationShowContainerStyle}>
             {notifications.map((item, index) => (
-              <React.Fragment key={index.toString()}>
+              <React.Fragment key={index}>
                 <h5 className="text-muted font-13 fw-normal mt-0">{item.day}</h5>
                 {(item.messages || []).map((message, i) => (
                   <Dropdown.Item
-                    key={i + '-noti'}
+                    key={`${index}-${i}`}
                     className={classNames(
                       'p-0 notify-item card shadow-none mb-2',
                       message.isRead ? 'read-noti' : 'unread-noti'
                     )}
+                    onClick={() => {
+                      markAsRead(message.id); // ✅ marcar como leído
+                       onSelectMessage(message); // ✅ mostrar mensaje en panel lateral
+                    }}
                   >
                     <Card.Body>
                       <span className="float-end noti-close-btn text-muted">
@@ -69,7 +74,7 @@ const NotificationDropdown = () => {
                           <div
                             className={classNames(
                               'notify-icon',
-                              message.variant && 'bg-' + message.variant
+                              message.variant && `bg-${message.variant}`
                             )}
                           >
                             {message.avatar ? (
@@ -102,6 +107,7 @@ const NotificationDropdown = () => {
                 ))}
               </React.Fragment>
             ))}
+
             <div className="text-center">
               <i className="mdi mdi-dots-circle mdi-spin text-muted h3 mt-0"></i>
             </div>

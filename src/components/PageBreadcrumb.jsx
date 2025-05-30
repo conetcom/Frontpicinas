@@ -6,7 +6,7 @@ const PageBreadcrumb = ({ subName, title, children }) => {
 	return (
 		<>
 			<Helmet>
-				<title>{title} | Piscinas - Responsive Bootstrap 5 Admin Dashboard</title>
+				<title>{title} | Piscinas - Administracion Piscinas Colombia</title>
 			</Helmet>
 			{subName && (
 				<Row>
@@ -14,7 +14,7 @@ const PageBreadcrumb = ({ subName, title, children }) => {
 						<div className="page-title-box">
 							<div className="page-title-right">
 								<Breadcrumb listProps={{ className: 'm-0' }}>
-									<Breadcrumb.Item as={'li'}>Hyper</Breadcrumb.Item>
+									<Breadcrumb.Item as={'li'}>Piscinas</Breadcrumb.Item>
 									<Breadcrumb.Item as={'li'}>{subName}</Breadcrumb.Item>
 									<Breadcrumb.Item as={'li'} active>
 										{title}

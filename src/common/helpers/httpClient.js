@@ -18,14 +18,16 @@ function HttpClient() {
       window.location.href = '/login'; // Redirigir al login automáticamente
       return Promise.reject('Session expired. Redirecting to login.');
     }
+// ✅ Rechaza el error original para mantener la estructura del error de Axios
+return Promise.reject(error);
 
-    return Promise.reject(
+   /* return Promise.reject(
       Object.keys(ErrorCodeMessages).includes(String(status))
         ? ErrorCodeMessages[status]
         : error.response?.data?.message
           ? error.response.data.message
           : error.message || error
-    );
+    );*/
   };
 
   const _httpClient = axios.create({

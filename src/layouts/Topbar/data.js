@@ -2,7 +2,7 @@ import avatar1 from '@/assets/images/users/avatar-1.jpg';
 import avatar2 from '@/assets/images/users/avatar-2.jpg';
 import avatar5 from '@/assets/images/users/avatar-5.jpg';
 
-// get the notifications
+//get the notifications
 const notifications = [
 	{
 		day: 'Today',
@@ -70,6 +70,7 @@ const profileMenus = [
 		icon: 'mdi mdi-account-circle',
 		redirectTo: '/pages/profile2',
 	},
+	/*
 	{
 		label: 'Settings',
 		icon: 'mdi mdi-account-edit',
@@ -79,7 +80,7 @@ const profileMenus = [
 		label: 'Support',
 		icon: 'mdi mdi-lifebuoy',
 		redirectTo: '#',
-	},
+	},*/
 	{
 		label: 'Lock Screen',
 		icon: 'mdi mdi-lock-outline',

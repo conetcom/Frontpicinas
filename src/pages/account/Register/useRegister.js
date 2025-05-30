@@ -25,8 +25,11 @@ export default function useRegister() {
 			.min(8, 'Password is too short - should be 8 chars minimum')
 			.matches(/[a-zA-Z]/, 'Password can only contain latin letters'),
 		password2: yup.string().oneOf([yup.ref('password1')], 'Passwords must match'),
-		rol: yup.string().required(t('Please enter rol administrador or cliente')),
-	});
+		rol: yup
+  		.string()
+ 		.oneOf(['admin', 'user'], t('Role must be admin or user'))
+  		.required(t('Please select a role')),	
+		});
 
 	const register = async (data ) => {
 		const { username, lastname, email, password1, rol} = data;
@@ -46,10 +49,20 @@ export default function useRegister() {
 				});
 				navigate('/account/confirm-mail');
 			}
-		} catch (e) {
-			const errorMsg = e.response?.data?.message || e.message || 'Error desconocido';
-			showNotification({ message: errorMsg, type: 'error' });
-		}
+	} catch (e) {
+  const status = e.response?.status;
+  const fallback = e.response?.data?.message || e.message || 'Error desconocido';
+
+  const messages = {
+    401: 'Credenciales inválidas',
+    403: 'Acceso denegado',
+    404: 'Recurso no encontrado',
+  };
+
+  const errorMsg = messages[status] || fallback;
+
+  showNotification({ message: errorMsg, type: 'error' });
+}
 		 finally {
 			setLoading(false);
 		}

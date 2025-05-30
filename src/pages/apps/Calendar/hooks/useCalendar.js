@@ -1,136 +1,153 @@
-import { useEffect, useState } from 'react';
-import { Draggable } from '@fullcalendar/interaction';
-import { useToggle } from '@/hooks';
-import { defaultEvents } from '../data';
+import { useState, useEffect } from "react";
+import axios from "axios";
+const appurl = import.meta.env.VITE_API_URL;
+export const useCalendar = () => {
+  const [calendarEvents, setCalendarEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const token = localStorage.getItem("token");
+  const authConfig = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
-export default function useCalendar() {
-	/*
-	 * modal handling
-	 */
-	const [isOpen, _toggle, show, hide] = useToggle();
-	const onCloseModal = () => {
-		hide();
-		setEventData({});
-		setDateInfo({});
-	};
-	const onOpenModal = () => show();
-	const [isEditable, setIsEditable] = useState(false);
+  // Cargar eventos desde el backend al montar el componente
+  useEffect(() => {
+    const fetchEvents = async () => {
+  try {
 
-	/*
-	 * event data
-	 */
-	const [events, setEvents] = useState([...defaultEvents]);
-	const [eventData, setEventData] = useState({});
-	const [dateInfo, setDateInfo] = useState({});
-
-	useEffect(() => {
-		// create dragable events
-		let draggableEl = document.getElementById('external-events');
-		new Draggable(draggableEl, {
-			itemSelector: '.external-event',
-		});
-	}, []);
-
-	/*
-    calendar events
-    */
-
-	// on date click
-	const onDateClick = (arg) => {
-		setDateInfo(arg);
-		onOpenModal();
-		setIsEditable(false);
-	};
-
-	// on event click
-	const onEventClick = (arg) => {
-		const event = {
-			id: String(arg.event.id),
-			title: arg.event.title,
-			className: arg.event.classNames[0],
-		};
-		setEventData(event);
-		onOpenModal();
-		setIsEditable(true);
-	};
-
-	// on drop
-	const onDrop = (arg) => {
-		const dropEventData = arg;
-		const title = dropEventData.draggedEl.title;
-		if (title == null) {
-		} else {
-			let newEvent = {
-				id: String(events.length + 1),
-				title: title,
-				start: dropEventData ? dropEventData.dateStr : new Date(),
-				className: dropEventData.draggedEl.attributes.getNamedItem('data-class')?.value,
-			};
-			const modifiedEvents = [...events];
-			modifiedEvents.push(newEvent);
-
-			setEvents(modifiedEvents);
-		}
-	};
-
-	// on add event
-	const onAddEvent = (data) => {
-		let modifiedEvents = [...events];
-		const event = {
-			id: String(modifiedEvents.length + 1),
-			title: data.title,
-			start: Object.keys(dateInfo).length !== 0 ? dateInfo.date : new Date(),
-			className: data.className,
-		};
-		modifiedEvents = [...modifiedEvents, event];
-		setEvents(modifiedEvents);
-		onCloseModal();
-	};
-
-	//  on update event
-	const onUpdateEvent = (data) => {
-		const modifiedEvents = [...events];
-		const idx = modifiedEvents.findIndex((e) => e['id'] === eventData.id);
-		modifiedEvents[idx]['title'] = data.title;
-		modifiedEvents[idx]['className'] = data.className;
-		setEvents(modifiedEvents);
-		onCloseModal();
-	};
-
-	// on remove event
-	const onRemoveEvent = () => {
-		var modifiedEvents = [...events];
-		const idx = modifiedEvents.findIndex((e) => e['id'] === eventData.id);
-		modifiedEvents.splice(idx, 1);
-		setEvents(modifiedEvents);
-		onCloseModal();
-	};
-
-	// on event drop
-	const onEventDrop = (arg) => {
-		const modifiedEvents = [...events];
-		const idx = modifiedEvents.findIndex((e) => e['id'] === String(arg.event.id));
-		modifiedEvents[idx]['title'] = arg.event.title;
-		modifiedEvents[idx]['className'] = arg.event.classNames;
-		modifiedEvents[idx]['start'] = arg.event.start;
-		modifiedEvents[idx]['end'] = arg.event.end;
-		setEvents(modifiedEvents);
-		setIsEditable(false);
-	};
-
-	return {
-		isOpen,
-		onOpenModal,
-		onCloseModal,
-		isEditable,
-		eventData,
-		events,
-		onDateClick,
-		onEventClick,
-		onDrop,
-		onEventDrop,
-		onUpdateEvent,
-		onRemoveEvent,
-		onAddEvent,
-	};
+    const res = await axios.get(`${appurl}events`, authConfig);
+    const formattedEvents = res.data.map(ev => ({
+      id: ev.id,
+      title: ev.title,
+      start: ev.start,
+      end: ev.fin, // <- transformamos `fin` a `end`
+      className: ev.category, // <- FullCalendar usa className para estilos
+    }));
+    setCalendarEvents(formattedEvents);
+  } catch (err) {
+  if (err.response) {
+    // El servidor respondió con un código de error
+    console.error("Error loading events - Response error:", err.response.status, err.response.data);
+  } else if (err.request) {
+    // No se recibió respuesta
+    console.error("Error loading events - No response received:", err.request);
+  } else {
+    // Error de configuración u otro error
+    console.error("Error loading events - Other error:", err.message);
+  }
 }
+
+};
+    fetchEvents();
+  }, []);
+
+  // Maneja la creación o edición del evento
+  const handleEventSubmit = async (eventData) => {
+    console.log("Token:", token);
+    try {
+      if (eventData.id) {
+        // Editar evento
+      await axios.put(`${appurl}events/${eventData.id}`, eventData, authConfig);
+        setCalendarEvents((prev) =>
+          prev.map((ev) => (ev.id === eventData.id ? eventData : ev))
+        );
+      } else {
+        // Crear evento
+        const res = await axios.post(`${appurl}events`, eventData, authConfig);
+        setCalendarEvents((prev) => [...prev, res.data]);
+      }
+      setOpenModal(false);
+    } catch (err) {
+      console.error("Error saving event:", err);
+    }
+  };
+
+  // Eliminar evento
+  const handleEventDelete = async (id) => {
+   console.log("ID recibido para eliminar:", id, typeof id); // <--- Añade esto
+
+    try {
+      await axios.delete(`${appurl}events/${id}`, authConfig);
+      setCalendarEvents((prev) => prev.filter((ev) => ev.id !== id));
+      setOpenModal(false);
+    } catch (err) {
+      console.error("Error deleting event:", err);
+    }
+  };
+  
+  // Click en un evento (para editar)
+const handleEventClick = (clickInfo) => {
+  const id = clickInfo.event.id;
+  const event = calendarEvents.find(ev => ev.id.toString() === id.toString()); // por si el tipo difiere
+  if (event) {
+    setSelectedEvent(event);
+    setOpenModal(true);
+  }
+};
+
+  // Click en un día (crear nuevo evento)
+  const handleDateClick = (selectInfo) => {
+    setSelectedEvent({
+      title: "",
+      start: selectInfo.dateStr,
+      fin: selectInfo.dateStr,
+      category: "",
+    });
+    setOpenModal(true);
+  };
+
+  // Mover evento (drag & drop)
+ const handleEventDrop = async (dropInfo) => {
+  try {
+    const originalEvent = calendarEvents.find(
+      (ev) => ev.id === parseInt(dropInfo.event.id)
+    );
+
+    if (!originalEvent) {
+      console.error("Evento no encontrado para ID:", dropInfo.event.id);
+      return;
+    }
+
+    const updatedEvent = {
+      ...originalEvent,
+      start: dropInfo.event.start.toISOString(),
+      fin: dropInfo.event.end.toISOString(), // Asegúrate de que tu backend espera "fin" y no "end"
+    };
+
+    console.log("Actualizando evento:", updatedEvent);
+
+    // Llama al backend
+    
+    await axios.put(`${appurl}events/${updatedEvent.id}`, updatedEvent, authConfig);
+
+    // Actualiza el estado en el frontend
+    setCalendarEvents((prevEvents) =>
+      prevEvents.map((ev) =>
+        ev.id === updatedEvent.id ? updatedEvent : ev
+      )
+    );
+  } catch (err) {
+    console.error("Error al actualizar evento arrastrado:", err);
+  }
+};
+
+
+ return {
+  events: calendarEvents,
+  eventData: selectedEvent,
+  isOpen: openModal,
+  onOpenModal: () => setOpenModal(true),
+  onCloseModal: () => setOpenModal(false),
+  isEditable: !!selectedEvent?.id,
+  onEventClick: handleEventClick,
+  onDateClick: handleDateClick,
+  onAddEvent: handleEventSubmit,
+  onUpdateEvent: handleEventSubmit,
+  onRemoveEvent: handleEventDelete,
+  onEventDrop: handleEventDrop,
+};
+
+};
+export default useCalendar;

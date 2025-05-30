@@ -12,7 +12,7 @@ const Status = () => {
 		labels: ['Completed', 'In-progress', 'Behind'],
 		datasets: [
 			{
-				data: [64, 26, 10],
+				data: [64, 126, 10],
 				backgroundColor: colors,
 				borderColor: 'transparent',
 				borderWidth: 3,
@@ -53,7 +53,7 @@ const Status = () => {
 						<div className="my-2 my-sm-0">
 							<i className="mdi mdi-trending-up text-success mt-3 h3"></i>
 							<h3 className="fw-normal">
-								<span>64%</span>
+								<span>32%</span>
 							</h3>
 							<p className="text-muted mb-0">Completed</p>
 						</div>
@@ -63,7 +63,7 @@ const Status = () => {
 						<div className="my-2 my-sm-0">
 							<i className="mdi mdi-trending-down text-primary mt-3 h3"></i>
 							<h3 className="fw-normal">
-								<span>26%</span>
+								<span>63%</span>
 							</h3>
 							<p className="text-muted mb-0"> In-progress</p>
 						</div>
@@ -73,7 +73,7 @@ const Status = () => {
 						<div className="my-2 my-sm-0">
 							<i className="mdi mdi-trending-down text-danger mt-3 h3"></i>
 							<h3 className="fw-normal">
-								<span>10%</span>
+								<span>5%</span>
 							</h3>
 							<p className="text-muted mb-0"> Behind</p>
 						</div>

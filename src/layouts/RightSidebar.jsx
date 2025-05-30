@@ -52,16 +52,7 @@ const RightSideBar = () => {
 								Reset
 							</button>
 						</div>
-						<div className="col-6">
-							<a
-								href="https://themes.getbootstrap.com/product/hyper-responsive-admin-dashboard-template/"
-								target="_blank"
-								role="button"
-								className="btn btn-primary w-100"
-							>
-								Buy Now
-							</a>
-						</div>
+						
 					</Row>
 				</div>
 			</Offcanvas>

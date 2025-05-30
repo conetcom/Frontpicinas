@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 export const loginFormSchema = yup.object({
-	email: yup.string().email('Please enter valid email').required('Please enter email'),
+	email: yup.string().email('Please enter a valid email').required('Please enter email'),
 	password: yup.string().required('Please enter password'),
 });
 
@@ -18,7 +18,7 @@ export default function useLogin() {
 	const { showNotification } = useNotifications();
 
 	const redirectUrl = useMemo(
-		() => (location.state && location.state.from ? location.state.from.pathname : '/'),
+		() => (location.state && location.state.from ? location.state.from.pathname : '/'), // El "/" apunta al componente Root
 		[location.state]
 	);
 
@@ -26,13 +26,17 @@ export default function useLogin() {
 		setLoading(true);
 		try {
 			const res = await authApi.login(values);
-			if (res.data.token) {
-				
-				localStorage.setItem('token', res.data.token);
-				localStorage.setItem('user', JSON.stringify(res.data.user));
-				console.log('usuario registrado', res.data.user)
-				saveSession({ user: res.data.user, token: res.data.token });
-				navigate(redirectUrl);
+			const user = res.data.user;
+			const token = res.data.token;
+
+			if (user && user.role) {
+				localStorage.setItem('token', token);
+				localStorage.setItem('user', JSON.stringify(user));
+				saveSession({ user, token });
+
+				navigate('/'); // Redirige al componente <Root />
+			} else {
+				showNotification({ message: 'Error: Usuario sin rol', type: 'error' });
 			}
 		} catch (error) {
 			showNotification({ message: error.toString(), type: 'error' });

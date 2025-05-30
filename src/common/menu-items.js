@@ -11,7 +11,7 @@ const MENU_ITEMS = [
 		icon: 'uil-home-alt',
 		badge: { variant: 'success', text: '5' },
 		children: [
-			{
+			/*{
 				key: 'ds-analytics',
 				label: 'Analytics',
 				url: '/dashboard/analytics',
@@ -22,14 +22,14 @@ const MENU_ITEMS = [
 				label: 'Ecommerce',
 				url: '/dashboard/ecommerce',
 				parentKey: 'dashboards',
-			},
+			},*/
 			{
 				key: 'ds-project',
-				label: 'Projects',
-				url: '/dashboard/project',
+				label: 'Piscinas',
+				url: '/dashboard/Piscinas',
 				parentKey: 'dashboards',
 			},
-			{
+			/*{
 				key: 'ds-crm',
 				label: 'CRM',
 				url: '/dashboard/crm',
@@ -40,7 +40,7 @@ const MENU_ITEMS = [
 				label: 'E-Wallet',
 				url: '/dashboard/e-wallet',
 				parentKey: 'dashboards',
-			},
+			},*/
 		],
 	},
 	{
@@ -55,7 +55,7 @@ const MENU_ITEMS = [
 		icon: 'uil-calender',
 		url: '/apps/calendar',
 	},
-	{
+	/*{
 		key: 'apps-chat',
 		label: 'Chat',
 		isTitle: false,
@@ -248,7 +248,7 @@ const MENU_ITEMS = [
 		key: 'custom',
 		label: 'Custom',
 		isTitle: true,
-	},
+	},*/
 	{
 		key: 'pages',
 		label: 'Pages',
@@ -260,7 +260,7 @@ const MENU_ITEMS = [
 				label: 'Profile',
 				url: '/pages/profile',
 				parentKey: 'pages',
-			},
+			},/*
 			{
 				key: 'page-profile2',
 				label: 'Profile 2',
@@ -415,9 +415,10 @@ const MENU_ITEMS = [
 				label: 'Timeline',
 				url: '/pages/timeline',
 				parentKey: 'pages',
-			},
+			},*/
 		],
 	},
+	/*
 	{
 		key: 'landing',
 		label: 'Landing',
@@ -944,7 +945,7 @@ const MENU_ITEMS = [
 				parentKey: 'menu-levels',
 			},
 		],
-	},
+	},*/
 ];
 
 const HORIZONTAL_MENU_ITEMS = [
@@ -1346,13 +1347,13 @@ const HORIZONTAL_MENU_ITEMS = [
 				url: '/pages/timeline',
 				parentKey: 'pages',
 			},
-			{
+			/*{
 				key: 'page-landing',
 				label: 'Landing',
 				url: '/landing',
 				target: '_blank',
 				parentKey: 'pages',
-			},
+			},*/
 		],
 	},
 	{

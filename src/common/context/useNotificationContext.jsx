@@ -40,7 +40,23 @@ export const NotificationProvider = ({ children }) => {
 
   const socket = io(import.meta.env.VITE_SOCKET_URL);
 
-  // Mostrar toast
+  // 👉 Función para marcar como leída
+  const markAsRead = (messageId) => {
+    // 1. Actualiza el estado local
+    setNotifications((prev) =>
+      prev.map((group) => ({
+        ...group,
+        messages: group.messages.map((msg) =>
+          msg.id === messageId ? { ...msg, isRead: true } : msg
+        ),
+      }))
+    );
+  
+    // 2. Enviar evento al backend por socket
+    socket.emit('markMessageAsRead', { messageId });
+  };
+  
+
   const showNotification = ({ title, message, type }) => {
     setToastConfig({
       show: true,
@@ -51,10 +67,9 @@ export const NotificationProvider = ({ children }) => {
   };
 
   const hideNotification = () => {
-    setToastConfig({ ...toastConfig, show: false });
+    setToastConfig((prev) => ({ ...prev, show: false }));
   };
 
-  // Agregar notificación estructurada
   const addNotification = (newNotiMessage) => {
     setNotifications((prev) => {
       const today = prev.find((item) => item.day === 'Hoy');
@@ -70,10 +85,11 @@ export const NotificationProvider = ({ children }) => {
     });
   };
 
-  // WebSocket listeners
   useEffect(() => {
     socket.on('newMessage', (message) => {
       const notification = {
+        type: message,
+        id: message.id || Date.now(), // Asegúrate de tener un ID único real si viene del backend
         title: message.username || 'Nuevo mensaje',
         subText: message.messages,
         avatar: message.avatar_url,
@@ -88,6 +104,8 @@ export const NotificationProvider = ({ children }) => {
 
     socket.on('newReply', (reply) => {
       const notification = {
+        type: reply,
+        id: reply.id || Date.now(),
         title: reply.username || 'Nueva respuesta',
         subText: reply.reply,
         avatar: reply.avatar_url,
@@ -106,13 +124,16 @@ export const NotificationProvider = ({ children }) => {
   }, []);
 
   return (
-    <NotificationContext.Provider value={{ showNotification, notifications }}>
+    <NotificationContext.Provider
+      value={{ showNotification, notifications, markAsRead }}
+    >
       <Toastr {...toastConfig} onClose={hideNotification} />
       {children}
     </NotificationContext.Provider>
   );
 };
 
+// ✅ Asegúrate de exportar esto correctamente
 export const useNotifications = () => {
   const context = useContext(NotificationContext);
   if (!context) {

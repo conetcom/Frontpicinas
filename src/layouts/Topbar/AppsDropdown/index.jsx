@@ -11,7 +11,7 @@ import { useToggle } from '@/hooks';
 
 // get the apps
 const apps = [
-	{
+	/*{
 		name: 'Slack',
 		icon: slackIcon,
 		redirectTo: '#',
@@ -40,7 +40,7 @@ const apps = [
 		name: 'G Suite',
 		icon: gSuiteIcon,
 		redirectTo: '#',
-	},
+	},*/
 ];
 
 const AppsDropdown = () => {

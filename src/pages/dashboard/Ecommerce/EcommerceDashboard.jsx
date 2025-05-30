@@ -2,16 +2,21 @@ import { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { CustomDatePicker } from '@/components';
-import Statistics from './Statistics';
+//import Statistics from './Statistics';
 import PerformanceChart from './PerformanceChart';
 import RevenueChart from './RevenueChart';
 import RevenueByLocationChart from './RevenueByLocationChart';
 import SalesChart from './SalesChart';
 import Activity from './Activity';
 import Products from './Products';
+import Messages from '@/components/Messages/Messages'
+import MessageDetail from '@/components/Messages/MessageDetail';
+
 
 const EcommerceDashboard = () => {
 	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [selectedMessage, setSelectedMessage] = useState(null);
+
 
 	return (
 		<>
@@ -44,12 +49,12 @@ const EcommerceDashboard = () => {
 
 			<Row>
 				<Col xl={5} lg={6}>
-					<Statistics />
+					<Messages />
 				</Col>
-
 				<Col xl={7} lg={6}>
-					<PerformanceChart />
+				<MessageDetail message={selectedMessage} />
 				</Col>
+				
 			</Row>
 
 			<Row>
